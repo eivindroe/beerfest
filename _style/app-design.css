@@ -1,0 +1,159 @@
+#page-header {
+    background-color: #fff;
+    border-bottom: 2px solid #ddd;
+    clear: both;
+    float: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+}
+
+.center {
+    margin: 0 auto;
+    max-width: 1024px;
+}
+
+#page-header ul li
+{
+    list-style-type: none;
+}
+
+#nav-menu {
+    position: absolute;
+    width: 100%;
+    max-width: 1280px;
+}
+
+#nav-menu ul li, #nav-panel ul li {
+    display: inline-block;
+    float: left;
+    padding: 25px 0 5px 0;
+}
+
+#nav-menu ul li:first-child {
+    background: url("../_images/beerfest_thumb.jpg") no-repeat;
+    display: block;
+    height: 50px;
+    width: 33px;
+    margin: 5px 20px 0 0;
+}
+#nav-menu ul li:first-child:before {
+    background: none;
+}
+
+#nav-menu ul li:before {
+    content: "";
+    background: url("../_images/navigate_r.png") no-repeat;
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    padding-left: 10px;
+    margin: 0 0 0 10px;
+}
+
+#nav-menu ul li a:hover {
+    border-bottom: 2px solid #666;
+    padding-bottom: 1px;
+}
+
+#nav-panel ul li:last-child {
+    display: inline-block;
+    float: right;
+    margin-left: 20px;
+    padding: 0;
+}
+
+#nav-menu a {
+    color: #000;
+    text-decoration: none;
+}
+
+#nav-panel {
+    background-color: #fff;
+    float: right;
+    position: relative;
+    padding-left: 20px;
+    z-index: 888888;
+}
+
+#page-panel {
+    background: url("../_images/transparent.png") repeat-y;
+    border: 3px solid #ddd;
+    border-top: 0;
+    display: none;
+    position: fixed;
+    top: 62px;
+    z-index: 99999;
+    width: 190px;
+}
+
+#page-panel ul li {
+    display: inline-block;
+    clear: both;
+    text-align: right;
+    padding: 5px 0!important;
+    float: right;
+    width: 100%;
+}
+
+#page-panel ul li:hover {
+    background-color: #efefef;
+    border-left: 3px solid #333;
+}
+
+#page-panel ul li a {
+    width: 100%;
+    color: #000;
+    font-weight: normal!important;
+    text-decoration: none;
+}
+
+#page-content {
+    padding: 80px 10px 20px 10px;
+}
+
+#page-login {
+    background: url("../_images/beerfest_banner.jpg") no-repeat;
+    padding-top: 350px;
+    max-width: 535px;
+    width: auto;
+    margin: 10px auto;
+}
+
+@media screen and (max-width: 700px) {
+    #nav-menu ul li:nth-last-child(1) {
+        display: none;
+    }
+
+    [data-priority="3"] {
+        display: none;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    #page-login {
+        background: url("../_images/beerfest_banner_small.jpg") no-repeat;
+        padding-top: 115px;
+        width: auto;
+        margin: 10px;
+    }
+
+    #nav-menu ul li:nth-of-type(1n+3) {
+        display: none;
+    }
+
+    #nav-panel ul li {
+        text-align: left;
+    }
+
+    #nav-panel ul:first-child li:first-child {
+        display: none;
+    }
+
+    [data-priority="2"] {
+        display: none;
+    }
+}
