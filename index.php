@@ -173,7 +173,7 @@ $app->post('/user/login', function() use ($app)
     $aryPost = $app->request->post('data');
     if($app->request->isXhr())
     {
-        $aryPost = json_decode($aryPost, true);
+        $aryPost = ajax_decode($aryPost);
     }
     $objAuth = new \Beerfest\Core\Auth;
     $blnValid = false;
@@ -213,7 +213,7 @@ $app->post('/user:strUserId', function($strUserId) use($app) {
     $aryPost = $app->request->post('data');
     if($app->request->isXhr())
     {
-        $aryPost = json_decode($aryPost, true);
+        $aryPost = ajax_decode($aryPost);
     }
     $objForm = new \Beerfest\User\Form($objUser);
     if($objForm->validate($aryPost) == true)
@@ -317,7 +317,7 @@ $app->post('/fest:strFestId', function($strFestId) use ($app) {
 
     if($app->request->isXhr())
     {
-        $aryPost = json_decode($aryPost['data'], true);
+        $aryPost = ajax_decode($aryPost['data']);
     }
     $objForm = new \Beerfest\Fest\Form($objFest);
     if($objForm->validate($aryPost) == true)
@@ -479,7 +479,7 @@ $app->post('/item:strItemId', function($strId) use($app) {
 
     if($app->request->isXhr())
     {
-        $aryPost = json_decode($aryPost['data'], true);
+        $aryPost = ajax_decode($aryPost['data']);
     }
     $objForm = new \Beerfest\Fest\Item\Form($objItem);
     if($objForm->validate($aryPost) == true)
@@ -524,7 +524,7 @@ $app->post('/item:strId/vote', function($strId) use($app) {
     $aryPost = $app->request->post('data');
     if($app->request->isXhr())
     {
-        $aryPost = json_decode($aryPost, true);
+        $aryPost = ajax_decode($aryPost);
     }
     $objItem = new \Beerfest\Fest\Item\Item($strId);
     $objForm = new \Beerfest\Fest\Item\Vote\Form($objItem);

@@ -87,7 +87,7 @@ class Votes
      * @since 29. February 2014, v. 1.00
      * @return array Item vote objects
      */
-    private function getVotes()
+    public function getVotes()
     {
         if(!isset($this->aryVotes))
         {
@@ -112,6 +112,12 @@ class Votes
     }// getVotes
 
 
+    /**
+     * Get vote values
+     *
+     * @since 29. February 2014, v. 1.00
+     * @return array Vote values
+     */
     public function getVoteValues()
     {
         $aryVotes = $this->getVotes();

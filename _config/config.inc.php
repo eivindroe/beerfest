@@ -25,24 +25,24 @@ class Config
 
     public function getTableName()
     {
-        return '';
+        return 'beerfest';
     }
 
     public function getName()
     {
-        return '';
+        return 'localhost';
     }// getName
 
     public function getUsername()
     {
-        return '';
+        return 'root';
     }// getUsername
 
 
 
     public function getPassword()
     {
-        return '';
+        return 'cimserver';
     }// getPassword
 
 

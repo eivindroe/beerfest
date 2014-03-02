@@ -271,7 +271,7 @@ abstract class Controller implements ListInterface
      */
     public function addButtonNew($strModule)
     {
-        $objButton = $this->addButton('add', 'Add');
+        $objButton = $this->addButton('add', _ADD);
         $objButton->setAttributes(array('data-module' => ucfirst($strModule), 'class' => 'add', 'data-icon' => 'plus'));
         $objButton->setInline(true);
         return $objButton;

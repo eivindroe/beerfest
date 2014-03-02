@@ -28,8 +28,14 @@ class Vote extends GenericObject
      */
     public function getValue()
     {
-        return number_format($this->get(VoteDB::COL_VALUE), 1);
+        return number_format($this->get(VoteDB::COL_VALUE), 0);
     }// getValue
+
+
+    public function getUserName()
+    {
+        return 'Eivind';
+    }
 
 
     /**

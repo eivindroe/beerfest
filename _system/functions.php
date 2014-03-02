@@ -81,3 +81,25 @@ function getUserId()
     $objAuth = new Beerfest\Core\Auth();
     return $objAuth->getActiveUserId();
 }// getUserId
+
+
+/**
+ * Decode ajax post request
+ *
+ * @param array $aryPost Posted values
+ *
+ * @since 02. March 2014, v. 1.00
+ * @return array Decoded post values
+ */
+function ajax_decode($aryPost)
+{
+    $aryPost = json_decode($aryPost, true);
+    foreach($aryPost as $strKey => $strValue)
+    {
+        if(is_string($strValue))
+        {
+            $aryPost[$strKey] = utf8_decode($strValue);
+        }
+    }
+    return $aryPost;
+}// ajax_decode

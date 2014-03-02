@@ -10,7 +10,8 @@ $.extend(Chart.prototype, {
         $objChart.empty();
         var plot1 = $.jqplot(strTarget, [aryData], {
             title: strName,
-            axes: {
+            axesDefaults: {
+                pad: 1
             }
         });
     }
