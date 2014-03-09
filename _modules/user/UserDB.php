@@ -89,7 +89,7 @@ class UserDB extends DBTable
     {
         if(isset($aryData[self::COL_PASSWORD]))
         {
-            $aryData[self::COL_PASSWORD] = crypt($aryData[self::COL_PASSWORD]);
+            $aryData[self::COL_PASSWORD] = Crypt::encrypt($aryData[self::COL_PASSWORD]);
         }
         DBTable::insert($aryData);
     }// insert

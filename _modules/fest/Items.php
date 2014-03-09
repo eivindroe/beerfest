@@ -53,9 +53,7 @@ class Items extends GenericObject
         foreach($aryResult as $aryRow)
         {
             $intId = $aryRow[$objDb::COL_ID];
-            $strId = md5($intId);
-            $aryRow['crypt_id'] = $strId;
-            $aryItems[$intId] = new Item($strId);
+            $aryItems[$intId] = new Item($intId);
         }
         return $aryItems;
     }// getItems

@@ -69,7 +69,7 @@ class Fest extends GenericObject
         foreach($aryUsers as $aryUser)
         {
             $intUserId = $aryUser[UserDB::COL_ID];
-            $objUser = new User(md5($intUserId));
+            $objUser = new User($intUserId);
             if(isset($aryParticipantsOrdered[$intUserId]))
             {
                 $aryRow = $aryParticipantsOrdered[$intUserId];
@@ -190,7 +190,7 @@ class Fest extends GenericObject
         $intCurrentItem = $this->get(FestDB::COL_CURRENT_ITEM);
         if($intCurrentItem)
         {
-            $mxdCurrentItem = new Item(md5($intCurrentItem));
+            $mxdCurrentItem = new Item($intCurrentItem);
         }
         return $mxdCurrentItem;
     }// getCurrentItem

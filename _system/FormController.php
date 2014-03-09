@@ -6,6 +6,7 @@ use Beerfest\Core\Form\Text;
 use Beerfest\Core\Form\Textarea;
 use Beerfest\Core\Form\Select;
 use Beerfest\Core\Form\Button;
+use Beerfest\Core\Form\File;
 use Beerfest\Core\Request;
 
 abstract class Controller
@@ -245,6 +246,21 @@ abstract class Controller
     {
         return $this->addElement(new RangeSlider($strName, $strLabel));
     }// addRangeSliderField
+
+
+    /**
+     * Add file form field
+     *
+     * @param string $strName File field name
+     * @param string $strLabel File field label
+     *
+     * @since 02. March 2014, v. 1.00
+     * @return File
+     */
+    public function addFileField($strName, $strLabel)
+    {
+        return $this->addElement(new File($strName, $strLabel));
+    }// addFileField
 
 
     /**

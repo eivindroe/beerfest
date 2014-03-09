@@ -3,6 +3,7 @@ namespace Beerfest\Fest\Item\Vote;
 
 use Beerfest\GenericObject;
 use Beerfest\Fest\Item\Vote\VoteDB;
+use Beerfest\User\User;
 
 class Vote extends GenericObject
 {
@@ -28,14 +29,22 @@ class Vote extends GenericObject
      */
     public function getValue()
     {
-        return number_format($this->get(VoteDB::COL_VALUE), 0);
+        return number_format($this->get(VoteDB::COL_VALUE), 1);
     }// getValue
 
 
+    /**
+     * Get user name
+     *
+     * @since 04. March 2014, v. 1.00
+     * @return string User name
+     */
     public function getUserName()
     {
-        return 'Eivind';
-    }
+        $intUserId = $this->get(VoteDB::COL_USER_ID);
+        $objUser = new User($intUserId);
+        return $objUser->getFullName();
+    }// getUserName
 
 
     /**

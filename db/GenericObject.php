@@ -48,6 +48,10 @@ class GenericObject
 
         if($mxdId)
         {
+            if(is_numeric($mxdId))
+            {
+                $mxdId = \Beerfest\Core\Crypt::encrypt($mxdId);
+            }
             $this->load($mxdId);
         }
     }// __construct
@@ -131,7 +135,7 @@ class GenericObject
         $mxdId = $this->get($this->getTablePrimaryColumn());
         if($mxdId)
         {
-            $mxdId = md5($mxdId);
+            $mxdId = \Beerfest\Core\Crypt::encrypt($mxdId);
         }
         return $mxdId;
     }// getCryptId
@@ -185,7 +189,7 @@ class GenericObject
     public function getAll()
     {
         $aryData = $this->aryData;
-        $aryData['crypt_id'] = md5($this->getId());
+        $aryData['crypt_id'] = \Beerfest\Core\Crypt::encrypt($this->getId());
         return $this->aryData;
     }// getAll
 

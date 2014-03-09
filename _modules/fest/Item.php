@@ -54,13 +54,27 @@ class Item extends GenericObject
     }// getVotes
 
 
+    /**
+     * Get votes for chart
+     *
+     * @since 02. March 2014, v. 1.00
+     * @return string Votes for chart
+     */
     public function getVotesForChart()
     {
-        $strVotes = '';
         $objVotes = $this->getVotes();
-        $aryValues = $objVotes->getVoteValues();
+        $aryVotes = $objVotes->getVotes();
+        $arySeries = array();
 
-        return implode(', ', $aryValues);
+        if(count($aryVotes))
+        {
+            foreach($aryVotes as $objVote)
+            {
+                $arySeries[] = '[\'' . $objVote->getUserName() . '\', ' . $objVote->getValue() . ']';
+            }
+        }
+
+        return '[' . implode(', ', $arySeries) . ']';
     }// getVotesForChart
 
 

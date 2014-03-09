@@ -10,6 +10,7 @@ const STR_ROOT = '/roemedia/beerfest/';
  */
 require 'Slim/Slim.php';
 //require '_packages/system/Beerfest.php';
+require '_system/Crypt.php';
 require '_config/config.inc.php';
 require '_system/Auth.php';
 require '_system/Request.php';
@@ -31,6 +32,7 @@ require '_system/FormElementSelect.php';
 require '_system/FormElementButton.php';
 require '_system/FormElementRange.php';
 require '_system/FormElementRangeSlider.php';
+require '_system/FormElementFile.php';
 require '_system/ListInterface.php';
 require '_system/ListController.php';
 require '_system/HtmlList.php';

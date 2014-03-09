@@ -104,8 +104,9 @@ class User extends GenericObject
         $objFest = null;
         if(count($aryFests))
         {
+            $intKey = key($aryFests);
             $intActiveFest = $aryFests[1];
-            $objFest = new Fest(md5($intActiveFest));
+            $objFest = new Fest($intActiveFest);
         }
         return $objFest;
     }// getActiveFest
@@ -171,7 +172,7 @@ class User extends GenericObject
         {
             foreach($aryResult as $aryRow)
             {
-                $objVote = new Vote(md5($aryRow[$objDb::COL_ID]));
+                $objVote = new Vote($aryRow[$objDb::COL_ID]);
                 $aryVotes[$objVote->get($objDb::COL_FEST_ID)][] = $objVote;
         }
         }

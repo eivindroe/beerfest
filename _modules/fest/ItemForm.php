@@ -9,7 +9,7 @@ class Form extends Controller
 {
     /**
      * Fest object
-     * @var \Beerfest\Fest\Item
+     * @var Item
      */
     private $objItem;
 

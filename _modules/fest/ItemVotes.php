@@ -102,7 +102,7 @@ class Votes
                 foreach($aryResult as $aryRow)
                 {
                     $intId = $aryRow[VoteDB::COL_ID];
-                    $aryVotes[$intId] = new Vote(md5($intId));
+                    $aryVotes[$intId] = new Vote($intId);
                 }
             }
             $this->aryVotes = $aryVotes;
@@ -227,7 +227,7 @@ class Votes
 
         if(count($aryResult))
         {
-            $objVote = new Vote(md5($aryResult[0][$objDb::COL_ID]));
+            $objVote = new Vote($aryResult[0][$objDb::COL_ID]);
         }
         return $objVote;
     }// getVoteByUser

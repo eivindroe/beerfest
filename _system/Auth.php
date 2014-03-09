@@ -20,7 +20,7 @@ class Auth
         $blnValid = false;
         $objDb = new UserDB();
         $strWhere = sql_where(UserDB::COL_USERNAME, $strUsername);
-        $strWhere .= ' AND ' . sql_where(UserDB::COL_PASSWORD, md5($strPassword));
+        $strWhere .= ' AND ' . sql_where(UserDB::COL_PASSWORD, \Beerfest\Core\Crypt::encrypt($strPassword));
 
         $aryResult = $objDb->select(array(UserDB::COL_ID), $strWhere);
 
@@ -72,7 +72,7 @@ class Auth
      */
     private function createSession($intUserId)
     {
-        $objUser = new User(md5($intUserId));
+        $objUser = new User($intUserId);
         $objUser->setLastActive();
         setcookie('logged_in', $objUser->getCryptId(), time()+86400, '/');
     }// createSession

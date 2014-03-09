@@ -65,7 +65,7 @@ class Users
             foreach($aryUsers as $aryUser)
             {
                 $intId = $aryUser[UserDB::COL_ID];
-                $objUser = new User(md5($intId));
+                $objUser = new User($intId);
                 $aryNames[$intId] = $objUser->getFullName();
             }
         }

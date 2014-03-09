@@ -122,6 +122,23 @@
     margin: 10px auto;
 }
 
+#result-chart {
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    z-index: 7777;
+}
+
+#overlay {
+    background-color: #fff;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
 @media screen and (max-width: 700px) {
     #nav-menu ul li:nth-last-child(1) {
         display: none;

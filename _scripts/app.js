@@ -10,6 +10,11 @@ $(window).on("load", function () {
     App = new Application();
     App.initialize();
 
+    $("#result-chart").on("click", function() {
+        $(this).hide();
+        $("#overlay").remove();
+    });
+
     $(document).on("click", "#logout", function (e) {
         e.preventDefault();
         App.logout($(this).attr("href"));

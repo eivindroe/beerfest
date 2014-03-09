@@ -71,7 +71,7 @@ class Details
 
             foreach($aryFestIds as $intFestId)
             {
-                $objFest = new Fest(md5($intFestId));
+                $objFest = new Fest($intFestId);
 
                 $objList = new HtmlList('votes', $objFest->get(FestDB::COL_NAME));
 
@@ -85,7 +85,7 @@ class Details
                 foreach($aryFestVotes as $objVote)
                 {
                     $intValue = $objVote->getValue();
-                    $objItem = new Item(md5($objVote->get(VoteDB::COL_FEST_ITEM_ID)));
+                    $objItem = new Item($objVote->get(VoteDB::COL_FEST_ITEM_ID));
                     $objList->addRow(
                         $objVote->getId(),
                         array(

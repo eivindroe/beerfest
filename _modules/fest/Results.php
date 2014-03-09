@@ -5,6 +5,7 @@ use Beerfest\Fest\Fest;
 use Beerfest\Fest\Item\Item;
 use Beerfest\Fest\Item\Vote\Votes;
 use Beerfest\Core\HtmlList\HtmlList;
+use Beerfest\Core\Button;
 
 class Result
 {
@@ -98,26 +99,33 @@ class Result
             $objAverage = $objList->addColumn('average', _ITEM_AVERAGE_VALUE);
             $objAverage->setAlignment($objAverage::ALIGN_CENTER);
 
-            $aryItems = array();
-            $strContent = '<div id="chart_total"></div>';
-            $strNav = '<li onclick="App.chart(\'chart_total\', \'\', [1,2,3]);"><a href="#total">Total</a></li>';
+            $objView = $objList->addColumn('view', _VIEW_RESULTS);
+            $objView->setAlignment($objView::ALIGN_CENTER);
+
+            $arySeries = array();
             foreach($aryVotes as $intKey => $objVotes)
             {
                 $objItem = $objVotes->getItem();
-                $strNav .= '<li onclick="App.chart(\'chart_' . $intKey . '\', \'\', [' . $objItem->getVotesForChart() . ']);"><a href="#chart_' . $intKey . '">' . $objItem->getName() . '</a></li>';
-                $aryItems[$objItem->getId()] = $objItem;
-                $aryRow = array('name' => $objVotes->getItemName(), 'votes' => $objVotes->getCount(), 'average' => $objVotes->getAverageValue());
+                $strVotes = $objItem->getVotesForChart();
+                $arySeries[] = '[\'' . $objItem->getName() . '\', ' . $objVotes->getAverageValue() . ']';
+                $objButton = new Button('view', _VIEW);
+                $objButton->setAttributes(array('onclick' => "App.chart('" . $objItem->getName() . "', " . $strVotes . ");"));
+                $aryRow = array(
+                    'name'      => $objVotes->getItemName(),
+                    'votes'     => $objVotes->getCount(),
+                    'average'   => $objVotes->getAverageValue(),
+                    'view'      => $objButton->getHtml()
+                );
                 $objRow = $objList->addRow($intKey, $aryRow);
                 $objRow->setId($objItem->getCryptId());
-                $strContent .= '<div id="chart_' . $intKey . '" style="width: 100%"></div>';
             }
+
+            $objTotal = new Button('total', 'Total');
+            $objTotal->setInline(true);
+            $objTotal->setAttributes(array('onclick' => 'App.chart(\'Total\', [' . implode(', ', $arySeries) . '])'));
+            $strHtml .= $objTotal->getHtml();
             $strHtml .= $objList->getListHtml();
-            //$strHtml .= $strNav . $strContent;
-            $strHtml .= '<br />
-                        <div data-role="tabs">
-                            <div data-role="navbar"><ul>' . $strNav . '</ul></div>
-                            ' . $strContent . '
-                        </div>';
+            $strHtml .= '<div id="result"><div id="result-chart" class="center"></div></div>';
         }
         return $strHtml;
     }// getHtml

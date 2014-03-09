@@ -20,6 +20,7 @@ const _ITEM_RANGE = 'Spenn';
 const _ITEM_LIST = 'Elementer';
 const _ITEM_ACTIVE = 'Aktiv';
 const _ITEM_AVERAGE_VALUE = 'Snittverdi';
+const _ITEM_IMAGE = 'Bilde';
 
 // Vote
 const _VOTE = 'Stem';
@@ -51,6 +52,10 @@ const _USERS = 'Brukere';
 const _USER_LAST_ACTIVE = 'Sist aktiv';
 const _LOG_IN = 'Logg inn';
 const _LOG_OUT = 'Logg ut';
+
+// Results
+const _RESULTS = 'Resultater';
+const _VIEW_RESULTS = 'Vis resultat';
 
 // Buttons
 const _SAVE = 'Lagre';

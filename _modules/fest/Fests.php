@@ -49,7 +49,7 @@ class Fests
         $aryResult = $this->getDb()->select(array_keys($objDb->getTableColumns()), '', $strOrder);
         foreach($aryResult as $aryRow)
         {
-            $aryFests[$aryRow[$objDb::COL_ID]] = new Fest(md5($aryRow[$objDb::COL_ID]));
+            $aryFests[$aryRow[$objDb::COL_ID]] = new Fest($aryRow[$objDb::COL_ID]);
         }
         return $aryFests;
     }// getFests

@@ -16,6 +16,7 @@ abstract class FormElement implements Element
     const ELEMENT_PASSWORD  = 'password';
     const ELEMENT_TEXTAREA  = 'textarea';
     const ELEMENT_RANGE     = 'range';
+    const ELEMENT_FILE      = 'file';
     const ELEMENT_SUBMIT    = 'submit';
     const ELEMENT_RESET     = 'reset';
     const ELEMENT_BUTTON    = 'button';

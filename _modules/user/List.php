@@ -48,7 +48,7 @@ class UserList extends HtmlList
         $objUsers = new Users();
         foreach($objUsers->getAll(UserDB::COL_LASTNAME) as $aryUser)
         {
-            $strId = md5($aryUser[UserDB::COL_ID]);
+            $strId = \Beerfest\Core\Crypt::encrypt($aryUser[UserDB::COL_ID]);
             $objRow = $this->addRow($aryUser[UserDB::COL_ID], $aryUser);
             $objRow->setEdit($strId);
             $objRow->setDelete($strId);

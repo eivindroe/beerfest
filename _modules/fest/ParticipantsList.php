@@ -95,7 +95,7 @@ class ParticipantsList extends HtmlList
                 $strId = '';
                 if(isset($aryRow[ParticipantDB::COL_ID]))
                 {
-                    $strId = md5($aryRow[ParticipantDB::COL_ID]);
+                    $strId = \Beerfest\Core\Crypt::encrypt($aryRow[ParticipantDB::COL_ID]);
                 }
                 $intSelected = ($aryRow[ParticipantDB::COL_ACTIVE] ? 1 : 0);
                 $objSelect = new Select('active');
@@ -105,7 +105,7 @@ class ParticipantsList extends HtmlList
                 {
                     $objFest = $this->getFest();
                     $aryAttributes['data-fest'] = $objFest->getCryptId();
-                    $aryAttributes['data-user'] = md5($aryRow[ParticipantDB::COL_USERID]);
+                    $aryAttributes['data-user'] = \Beerfest\Core\Crypt::encrypt($aryRow[ParticipantDB::COL_USERID]);
                 }
                 $objSelect->setAttributes($aryAttributes);
                 $objSelect->addOption(0, _NO);

@@ -56,9 +56,8 @@ class Participants extends GenericObject
         foreach($aryResult as $aryRow)
         {
             $intId = $aryRow[$objDb::COL_ID];
-            $strId = md5($intId);
             $aryUserIds[] = $aryRow[ParticipantDB::COL_USERID];
-            $aryParticipants[$intId] = new Participant($strId);
+            $aryParticipantsCollection[$intId] = new Participant($intId);
         }
 
         $objUsers = new Users();
@@ -66,7 +65,7 @@ class Participants extends GenericObject
 
         if(count($aryUserNames))
         {
-            foreach($aryParticipants as $intId => $objParticipant)
+            foreach($aryParticipantsCollection as $intId => $objParticipant)
             {
                 $intUserId = $objParticipant->get(ParticipantDB::COL_USERID);
                 if(isset($aryUserNames[$intUserId]))
@@ -98,7 +97,7 @@ class Participants extends GenericObject
         $arySelect = $objDb->select(array(ParticipantDB::COL_ID), $strWhere);
         if(count($arySelect))
         {
-            $objParticipant = new Participant(md5($arySelect[0][ParticipantDB::COL_ID]));
+            $objParticipant = new Participant($arySelect[0][ParticipantDB::COL_ID]);
         }
         return $objParticipant;
     }// getParticipantId
