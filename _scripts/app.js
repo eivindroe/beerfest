@@ -338,7 +338,7 @@ $.extend(Vote.prototype, {
        var $objTaste = $("#weighting_taste");
        var intTaste = ($objTaste.val() * $objTaste.attr("data-weight"));
 
-       $objTotal.val((intColor + intFoam + intTaste));
+       $objTotal.val((intColor + intFoam + intTaste).toFixed(2));
    }
 });
 
