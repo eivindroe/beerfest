@@ -125,7 +125,7 @@ abstract class DBTable implements DBTable_base
                 {
                     $intSize = '10,2';
                 }
-                elseif($strType == self::COL_TYPE_BOOL)
+                elseif($strType == self::DB_TYPE_BOOL)
                 {
                     $intSize = 1;
                 }
@@ -186,7 +186,7 @@ abstract class DBTable implements DBTable_base
      * Get database connection
      *
      * @since 11. February 2014, v. 1.00
-     * @return Database
+     * @return \mysqli
      */
     private function getConnection()
     {
@@ -234,6 +234,28 @@ abstract class DBTable implements DBTable_base
 
 
     /**
+     * Query
+     *
+     * @param $strQuery
+     *
+     * @since 10. March 2014, v. 1.00
+     * @return \mysqli
+     */
+    private function query($strQuery)
+    {
+        $objConnection = $this->getConnection();
+        $objQuery = $objConnection->query($strQuery);
+
+        if($objQuery === false)
+        {
+            print_r($objConnection->error);
+            exit;
+        }
+        return $objQuery;
+    }// query
+
+
+    /**
      * Select from database
      * @param array $aryFields Fields to select
      * @param string $strWhere Where clause
@@ -274,17 +296,11 @@ abstract class DBTable implements DBTable_base
 
         $strSelect = 'SELECT ' . $strFields . ' FROM `' . $this->getTableName() . '` ' . $strWhere . $strOrder . $strLimit;
 
-        $objSelect = mysqli_query($this->getConnection(), $strSelect);
-        if($objSelect === false)
+        $objSelect = $this->query($strSelect);
+
+        while($aryRow = $objSelect->fetch_assoc())
         {
-            print_r($this->getConnection()->error);
-        }
-        else
-        {
-            while($aryRow = $objSelect->fetch_assoc())
-            {
-                $aryResult[] = $aryRow;
-            }
+            $aryResult[] = $aryRow;
         }
 
         return $aryResult;
@@ -307,12 +323,7 @@ abstract class DBTable implements DBTable_base
         $strFields = $this->getFieldsFormatted(array_keys($aryValues));
         $strValues = $this->getValuesFormatted($aryValues);
         $strQuery = 'INSERT INTO ' . $this->getTableName() . ' ' . $strFields . ' VALUES ' . $strValues;
-        $objInsert = mysqli_query($objConnection, $strQuery);
-        if($objInsert === false)
-        {
-            print_r($objConnection->error);
-        }
-
+        $objInsert = $this->query($strQuery);
         return mysqli_insert_id($objConnection);
     }// insert
 

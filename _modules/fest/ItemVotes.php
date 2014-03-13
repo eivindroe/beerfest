@@ -233,4 +233,63 @@ class Votes
     }// getVoteByUser
 
 
+    /**
+     * Get votes for chart
+     *
+     * @since 02. March 2014, v. 1.00
+     * @return string Votes for chart
+     */
+    public function getVotesForChart()
+    {
+        $aryVotes = $this->getVotes();
+        $arySeries = array();
+
+        if(count($aryVotes))
+        {
+            foreach($aryVotes as $objVote)
+            {
+                $aryDetails = json_decode($objVote->get(VoteDB::COL_DETAILS), true);
+                if(is_array($aryDetails))
+                {
+                    foreach($aryDetails as $strKey => $aryData)
+                    {
+                        $arySeries[$strKey][] = ($aryData['value'] * $aryData['weight']);
+                    }
+                }
+            }
+        }
+        $strSeries = '';
+        foreach($arySeries as $aryValues)
+        {
+            if($strSeries)
+            {
+                $strSeries .= ', ';
+            }
+            $strSeries .= '[' . implode(', ', $aryValues) . ']';
+        }
+        return '[' . $strSeries . ']';
+    }// getVotesForChart
+
+
+    /**
+     * Get user names for chart
+     *
+     * @since 11. March 2014, v. 1.00
+     * @return string User names for chart
+     */
+    public function getUserNamesForChart()
+    {
+        $aryNames = array();
+        $aryVotes = $this->getVotes();
+        if(count($aryVotes))
+        {
+            foreach($aryVotes as $objVote)
+            {
+                $aryNames[] = $objVote->getUserName();
+            }
+        }
+        return '\'' . implode('\', \'', $aryNames) . '\'';
+    }// getUserNamesForChart
+
+
 }// Votes

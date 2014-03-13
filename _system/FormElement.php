@@ -22,12 +22,6 @@ abstract class FormElement implements Element
     const ELEMENT_BUTTON    = 'button';
 
     /**
-     * Element errors
-     * @var string
-     */
-    const ERROR_REQUIRED = 'Required field';
-
-    /**
      * Element type
      * @var string
      */
@@ -172,12 +166,12 @@ abstract class FormElement implements Element
      * @param mixed $mxdValue Element value
      *
      * @since 22. February 2014, v. 1.00
-     * @return mixed Element value
+     * @return FormElement
      */
     public function setValue($mxdValue)
     {
         $this->strValue = $mxdValue;
-        return $this->strValue;
+        return $this;
     }// setValue
 
 
@@ -224,7 +218,7 @@ abstract class FormElement implements Element
      * @param boolean $blnRequired Flag if required
      *
      * @since 22. February 2014, v. 1.00
-     * @return boolean Value after trying to define new, true or false
+     * @return FormElement
      */
     public function setRequired($blnRequired)
     {
@@ -232,7 +226,7 @@ abstract class FormElement implements Element
         {
             $this->blnRequired = $blnRequired;
         }
-        return $this->blnRequired;
+        return $this;
     }// setRequired
 
 
@@ -254,7 +248,7 @@ abstract class FormElement implements Element
      * @param string $strPlaceholder Placeholder
      *
      * @since 22. February 2014, v. 1.00
-     * @return string Defined placeholder
+     * @return FormElement
      */
     public function setPlaceholder($strPlaceholder)
     {
@@ -262,7 +256,7 @@ abstract class FormElement implements Element
         {
             $this->strPlaceholder = $strPlaceholder;
         }
-        return $this->strPlaceholder;
+        return $this;
     }// setPlaceholder
 
 
@@ -301,7 +295,7 @@ abstract class FormElement implements Element
      * @param array $aryAttributes Element attributes as single array
      *
      * @since 22. February 2014, v. 1.00
-     * @return array Defined attributes
+     * @return FormElement
      */
     public function setAttributes($aryAttributes)
     {
@@ -309,7 +303,7 @@ abstract class FormElement implements Element
         {
             $this->aryAttributes = array_merge($this->aryAttributes, $aryAttributes);
         }
-        return $this->aryAttributes;
+        return $this;
     }// setAttributes
 
 
@@ -370,16 +364,36 @@ abstract class FormElement implements Element
      * @param boolean $blnDisabled True/false
      *
      * @since 22. February 2014, v. 1.00
-     * @return boolean True if disabled, false if not
+     * @return FormElement
      */
     public function setDisabled($blnDisabled)
     {
+        $this->removeAttribute('disabled');
         if(is_bool($blnDisabled) && $blnDisabled == true)
         {
-            $this->removeAttribute('disabled');
             $this->setAttributes(array('disabled' => 'disabled'));
         }
+        return $this;
     }// setDisabled
+
+
+    /**
+     * Set read only on element
+     *
+     * @param boolean $blnReadOnly Read only
+     *
+     * @since 11. March 2014, v. 1.00
+     * @return FormElement
+     */
+    public function setReadOnly($blnReadOnly)
+    {
+        $this->removeAttribute('readonly');
+        if(is_bool($blnReadOnly) && $blnReadOnly == true)
+        {
+            $this->setAttributes(array('readonly' => 'readonly'));
+        }
+        return $this;
+    }// setReadOnly
 
 
     /**
@@ -396,7 +410,7 @@ abstract class FormElement implements Element
         if($this->isRequired() && $strValue == '' && !in_array($this->getType(), array(FormElement::ELEMENT_SUBMIT,
                 FormElement::ELEMENT_RESET, FormElement::ELEMENT_BUTTON)))
         {
-            $this->setError(self::ERROR_REQUIRED);
+            $this->setError(_REQUIRE_FIELD);
             $blnValid = false;
         }
         return $blnValid;
@@ -409,12 +423,12 @@ abstract class FormElement implements Element
      * @param $strError Element error
      *
      * @since 25. February 2014, v. 1.00
-     * @return string Element error
+     * @return FormElement
      */
     private function setError($strError)
     {
         $this->strError = $strError;
-        return $this->strError;
+        return $this;
     }// setError
 
 

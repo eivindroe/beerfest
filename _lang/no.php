@@ -20,7 +20,10 @@ const _ITEM_RANGE = 'Spenn';
 const _ITEM_LIST = 'Elementer';
 const _ITEM_ACTIVE = 'Aktiv';
 const _ITEM_AVERAGE_VALUE = 'Snittverdi';
-const _ITEM_IMAGE = 'Bilde';
+const _ITEM_COLOR = 'Farge';
+const _ITEM_FOAM = 'Skum';
+const _ITEM_TASTE = 'Smak';
+const _ITEM_WEIGHTING = 'Vekting';
 
 // Vote
 const _VOTE = 'Stem';
@@ -29,7 +32,7 @@ const _START = 'Start fest';
 const _VOTE_VALUE = 'Verdi';
 const _VOTE_USER = 'Bruker';
 const _VOTES = 'Stemmer';
-
+const _VOTE_TOTAL = 'Totalt';
 
 // User, participant
 const _USERNAME = 'Brukernavn';
@@ -72,3 +75,4 @@ const _YES = 'Ja';
 const _MENU = 'Meny';
 const _VIEW = 'Vis';
 const _ADD = 'Ny';
+const _REQUIRED_FIELD = 'Obligatorisk felt';

@@ -10,6 +10,21 @@ $(window).on("load", function () {
     App = new Application();
     App.initialize();
 
+    $(".vote").on("change", function () {
+        var $objTotal = $("#vote_total");
+
+        var $objColor = $("#weighting_color");
+        var intColor = ($objColor.val() * $objColor.attr("data-weight"));
+
+        var $objFoam = $("#weighting_foam");
+        var intFoam = ($objFoam.val() * $objFoam.attr("data-weight"));
+
+        var $objTaste = $("#weighting_taste");
+        var intTaste = ($objTaste.val() * $objTaste.attr("data-weight"));
+
+        $objTotal.val((intColor + intFoam + intTaste));
+    });
+
     $("#result-chart").on("click", function() {
         $(this).hide();
         $("#overlay").remove();

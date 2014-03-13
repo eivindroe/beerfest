@@ -42,6 +42,18 @@ class Fest extends GenericObject
 
 
     /**
+     * Get fest item vote weighting
+     *
+     * @since 10. March 2014, v. 1.00
+     * @return array Fest item vote weighting
+     */
+    public function getWeighting()
+    {
+        return json_decode($this->get(FestDB::COL_VOTING), true);
+    }// getWeighting
+
+
+    /**
      * Get fest participants
      *
      * @since 22. February 2014, v. 1.00
@@ -236,6 +248,7 @@ class Fest extends GenericObject
     public function setCurrentItem($objItem)
     {
         $this->set(FestDB::COL_CURRENT_ITEM, $objItem->getId());
+        $this->set(FestDB::COL_VOTING, addslashes($this->get(FestDB::COL_VOTING)));
         $this->save();
     }// setCurrentItem
 

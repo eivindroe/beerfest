@@ -51,7 +51,7 @@ class Details
         $objItem = $this->getItem();
 
         $strHtml = '<h1>' . $objItem->get(ItemDB::COL_NAME) . '</h1><p>' . _ITEM_DESCRIPTION . ': ' .
-            $objItem->get(ItemDB::COL_DESC) . '<br />' . _ITEM_RANGE . ': ' . $objItem->get(ItemDB::COL_RANGE) . '</p><br />';
+            $objItem->get(ItemDB::COL_DESC) . '</p><br />';
 
         $objVotes = $objItem->getVotes();
 

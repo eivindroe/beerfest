@@ -24,13 +24,14 @@ class Database
      * Connect to database and select given database
      *
      * @since 11. February 2014, v. 1.00
-     * @return void
+     * @return \mysqli
      */
     private function connect()
     {
         $objConfig = new \Beerfest\Config();
-        $this->objConnection = mysqli_connect($objConfig->getName(), $objConfig->getUsername(), $objConfig->getPassword());
-        $this->objConnection->select_db($objConfig->getTableName());
+        $objConnection = new \mysqli();
+        $objConnection->connect($objConfig->getName(), $objConfig->getUsername(), $objConfig->getPassword(), $objConfig->getTableName());
+        $this->objConnection = $objConnection;
     }// connect
 
 
@@ -50,7 +51,7 @@ class Database
      * Get database connection
      *
      * @since 11. February 2014, v. 1.00
-     * @return Database
+     * @return \mysqli
      */
     public function getConnection()
     {

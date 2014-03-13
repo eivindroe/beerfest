@@ -27,7 +27,10 @@ class Form extends Controller
         $this->loadElements();
         if($objItem->getId())
         {
-            $this->setDefaults($objItem->getAll());
+            $aryItem = $objItem->getAll();
+            $aryRanges = $objItem->getRangeAsArray();
+            $aryItem = array_merge($aryItem, $aryRanges);
+            $this->setDefaults($aryItem);
         }
         $this->objItem = $objItem;
     }// __construct
@@ -47,9 +50,6 @@ class Form extends Controller
 
         $objDesc = $this->addTextArea(ItemDB::COL_DESC, _ITEM_DESCRIPTION, 255);
         $objDesc->setPlaceholder(_ITEM_DESCRIPTION);
-
-        $objRange = $this->addRangeSliderField(ItemDB::COL_RANGE, _ITEM_RANGE);
-        $objRange->setRange(1, 10);
 
         $this->addHiddenField(ItemDB::COL_FEST_ID);
 

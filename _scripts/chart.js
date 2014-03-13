@@ -2,82 +2,51 @@
 var Chart = function () {}
 
 $.extend(Chart.prototype, {
-    initialize: function (strName, aryData) {
-        this.view(strName, aryData);
+    initialize: function (strName, aryData, aryLabel) {
+        this.view(strName, aryData, aryLabel);
     },
-    view: function(strName, aryData) {
+    view: function(strName, aryData, aryLabel) {
         $('<div id="overlay"></div>').appendTo("body");
         var $objChart = $("#result-chart");
         $objChart.empty().show();
-        var Plot = $.jqplot("result-chart", [aryData], {
+        var Plot = $.jqplot("result-chart", aryData, {
             title: strName,
+            stackSeries: true,
+            captureRightClick: true,
             animate: true,
-            animateReplot: true,
-            series:[{renderer:$.jqplot.BarRenderer}],
-            axesDefaults: {
-                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-                tickOptions: {
-                    angle: -30,
-                    fontSize: '10pt'
-                }
-            },
             axes: {
                 xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer
+                    renderer: $.jqplot.CategoryAxisRenderer,
+                    ticks: aryLabel,
+                    tickOptions: {
+                        angle: -90,
+                        fontSize: '10pt'
+                    }
                 },
                 yaxis: {
                     min: 0,
                     max: 10,
                     tickInterval: 1
                 }
-            }
-            /*axesDefaults: {
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                showLabel: true,
-                tickOptions: {
-                    showLabel: true
+            },
+            seriesDefaults:{
+                renderer: $.jqplot.BarRenderer,
+                rendererOptions: {
+                    highlightMouseDown: false,
+                    highlightMouseOver: false
+                },
+                pointLabels: {
+                    show: false
                 }
             },
-            animate: true,
-            animateReplot: true,
-            seriesDefaults: [{
-                label: 'test'
-            }
-            ],
-            series:[
-                {
-                    pointLabels: {
-                        show: false
-                    },
-                    renderer: $.jqplot.BarRenderer,
-                    showHighlight: false,
-                    rendererOptions: {
-                        animation: {
-                            speed: 4000
-                        },
-                        barWidth: 30,
-                        barPadding: -15,
-                        barMargin: 0,
-                        highlightMouseOver: false
-                    }
+            series: [{
+                    color: "#b04f35"
+                }, {
+                    color: "#82c9ff"
+                }, {
+                    color: "#a2a638"
                 }
-            ],
-            axes: {
-                xaxis: {
-                    //tickInterval: 1,
-                    drawMajorGridlines: false,
-                    drawMinorGridlines: false,
-                    drawMajorTickMarks: false,
-                    rendererOptions: {
-                        //tickInset: 1,
-                        //minorTicks: 1
-                    },
-                    pad: 1
-                },
-                yaxis: {
-                    min: 0, max: 10, tickInterval: 1
-                }
-            }*/
+            ]
         });
     }
 });

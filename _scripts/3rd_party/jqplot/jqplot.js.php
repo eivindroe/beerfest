@@ -14,6 +14,7 @@ readfile('source/plugins/jqplot.barRenderer.min.js');
 readfile('source/plugins/jqplot.highlighter.min.js');
 readfile('source/plugins/jqplot.cursor.min.js');
 readfile('source/plugins/jqplot.pointLabels.min.js');
+readfile('source/plugins/jqplot.enhancedLegendRenderer.min.js');
 readfile('source/plugins/jqplot.dateAxisRenderer.min.js');
 readfile('source/plugins/jqplot.canvasTextRenderer.min.js');
 readfile('source/plugins/jqplot.canvasAxisTickRenderer.min.js');

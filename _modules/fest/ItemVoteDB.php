@@ -17,6 +17,7 @@ class VoteDB extends DBTable
     const COL_FEST_ID       = FestDB::COL_ID;
     const COL_USER_ID       = UserDB::COL_ID;
     const COL_VALUE         = 'value';
+    const COL_DETAILS       = 'details';
     const COL_DATE          = 'date';
     const COL_DELETED       = 'deleted';
 
@@ -64,6 +65,9 @@ class VoteDB extends DBTable
             self::COL_VALUE => array(
                 DBTable::DB_TYPE            => DBTable::DB_TYPE_DOUBLE,
                 DBTable::DB_REQUIRED        => true
+            ),
+            self::COL_DETAILS => array(
+                DBTable::DB_TYPE            => DBTable::DB_TYPE_VARCHAR
             ),
             self::COL_DATE => array(
                 DBTable::DB_TYPE            => DBTable::DB_TYPE_BIGINT,

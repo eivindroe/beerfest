@@ -46,7 +46,7 @@ class Range extends FormElement
      * @param integer $intMax Range maximum value
      *
      * @since 27. February 2014, v. 1.00
-     * @return void
+     * @return Range
      */
     public function setRange($intMin, $intMax)
     {
@@ -58,6 +58,7 @@ class Range extends FormElement
         {
             $this->intMax = $intMax;
         }
+        return $this;
     }// setRange
 
 
@@ -115,7 +116,7 @@ class Range extends FormElement
      * @param integer $intStep Range step
      *
      * @since 27. February 2014, v. 1.00
-     * @return integer Defined range step
+     * @return Range
      */
     public function setStep($intStep)
     {
@@ -123,7 +124,7 @@ class Range extends FormElement
         {
             $this->intStep = $intStep;
         }
-        return $this->intStep;
+        return $this;
     }// setStep
 
 
@@ -159,7 +160,7 @@ class Range extends FormElement
      */
     public function getHtml()
     {
-        return '<input type="range" name="' . $this->getName() . '"' . $this->getValueHtml() . $this->getPlaceholderHtml() .
+        return $this->getLabelAsHtml() . '<input type="range" name="' . $this->getName() . '"' . $this->getValueHtml() . $this->getPlaceholderHtml() .
         $this->getMinAsHtml() . $this->getMaxAsHtml() . $this->getStepAsHtml() . $this->getAttributesHtml() . '" />';
     }// getHtml
 

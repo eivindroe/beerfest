@@ -2,14 +2,23 @@
 namespace Beerfest\Fest\Item\Vote;
 
 use Beerfest\Core\Form\Controller;
+use Beerfest\Fest\Fest;
+use Beerfest\Fest\FestDB;
 use Beerfest\Fest\Item\Item;
 use Beerfest\Fest\Item\ItemDB;
 use Beerfest\Fest\Item\Vote\VoteDB;
 use Beerfest\Fest\Item\Vote\Votes;
 use Beerfest\Fest\Item\Vote\Vote;
+use Beerfest\User\User;
 
 class Form extends Controller
 {
+    /**
+     * Weighting
+     * @var string
+     */
+    const COL_WEIGHTING = 'weighting';
+
     /**
      * Item object
      * @var Item
@@ -26,9 +35,16 @@ class Form extends Controller
 
     /**
      * Active user
-     * @var \Beerfest\User\User
+     * @var User
      */
     private $objUser;
+
+
+    /**
+     * Fest connected to item
+     * @var Fest
+     */
+    private $objFest;
 
 
     /**
@@ -51,7 +67,7 @@ class Form extends Controller
      * Get active user
      *
      * @since 29. February 2014, v. 1.00
-     * @return \Beerfest\User\User
+     * @return User
      */
     private function getActiveUser()
     {
@@ -96,6 +112,23 @@ class Form extends Controller
 
 
     /**
+     * Get fest object
+     *
+     * @since 10. March 2014, v. 1.00
+     * @return Fest
+     */
+    private function getFest()
+    {
+        if(!isset($this->objFest))
+        {
+            $this->objFest = new Fest($this->getItem()->get(ItemDB::COL_FEST_ID));;
+        }
+
+        return $this->objFest;
+    }// getFest
+
+
+    /**
      * Load form elements
      *
      * @since 27. February 2014, v. 1.00
@@ -105,22 +138,42 @@ class Form extends Controller
     {
         $objItem = $this->getItem();
         $objVote = $this->getVote();
-        $aryRange = $objItem->getRangeAsArray();
 
-        $objRange = $this->addRangeField(VoteDB::COL_VALUE, _VOTE_VALUE);
-        $objRange->setRequired(true);
-        $objRange->setRange($aryRange[0], $aryRange[1]);
-        $objRange->setStep(0.1);
-        $objRange->setAttributes(array('data-highlight' => 'true'));
+        $objFest = $this->getFest();
+        $aryWeighting = $objFest->getWeighting();
+        $aryWeightingObjects = array();
+        if(count($aryWeighting))
+        {
+            $aryLabel = array(
+                'color' => _ITEM_COLOR,
+                'foam' => _ITEM_FOAM,
+                'taste' => _ITEM_TASTE
+            );
+            foreach($aryWeighting as $strKey => $intValue)
+            {
+                $aryWeightingObjects[$strKey] = $this->addRangeField(self::COL_WEIGHTING . '_' .
+                    $strKey, $aryLabel[$strKey])->setStep(0.1)->setRange(0, 10)->setAttributes(
+                        array('data-highlight' => 'true', 'class' => 'vote', 'data-weight' => $intValue));
+            }
+        }
+
+        $objTotal = $this->addTextField(VoteDB::COL_VALUE, _VOTE_TOTAL)->setAttributes(array('id' => 'vote_total'))->setReadOnly(true);
 
         $objFestId = $this->addHiddenField(VoteDB::COL_FEST_ID);
         $objFestItem = $this->addHiddenField(VoteDB::COL_FEST_ITEM_ID);
 
         if($objVote)
         {
-            $objRange->setValue($objVote->get(VoteDB::COL_VALUE));
             $objFestId->setValue($objVote->get(VoteDB::COL_FEST_ID));
             $objFestItem->setValue($objVote->get(VoteDB::COL_FEST_ITEM_ID));
+            $objTotal->setValue($objVote->get(VoteDB::COL_VALUE));
+
+            // Set weighting defaults
+            $aryVote = json_decode($objVote->get(VoteDB::COL_DETAILS), true);
+            foreach($aryVote as $strKey => $aryValue)
+            {
+                $aryWeightingObjects[$strKey]->setValue($aryValue['value']);
+            }
         }
         elseif($objItem)
         {
@@ -128,9 +181,9 @@ class Form extends Controller
             $objFestItem->setValue($objItem->getId());
         }
 
-        $objSubmit = $this->addButtonSubmit(_VOTE);
-        $objReset = $this->addButtonReset();
-        $objCancel = $this->addButtonCancel();
+        $this->addButtonSubmit(_VOTE);
+        $this->addButtonReset();
+        $this->addButtonCancel();
     }// loadElements
 
 
@@ -152,11 +205,29 @@ class Form extends Controller
         }
 
         $aryVote = $this->getPostData();
+        $aryWeighting = $this->getFest()->getWeighting();
+        $aryVoteDetails = array();
+        $intVoteValue = 0;
 
-        foreach($aryVote as $strKey => $strValue)
+        foreach($aryVote as $strKey => $mxdValue)
         {
-            $objVote->set($strKey, $strValue);
+            if(stristr($strKey, self::COL_WEIGHTING))
+            {
+                $strKey = str_replace(self::COL_WEIGHTING . '_', '', $strKey);
+                if(isset($aryWeighting[$strKey]))
+                {
+                    $aryVoteDetails[$strKey]['value'] = $mxdValue;
+                    $aryVoteDetails[$strKey]['weight'] = $aryWeighting[$strKey];
+                    $intVoteValue += ($mxdValue * $aryWeighting[$strKey]);
+                }
+            }
+            else
+            {
+                $objVote->set($strKey, $mxdValue);
+            }
         }
+        $objVote->set(VoteDB::COL_VALUE, $intVoteValue);
+        $objVote->set(VoteDB::COL_DETAILS, addslashes(json_encode($aryVoteDetails)));
         return $objVote->save();
     }// saveVote
 

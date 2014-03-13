@@ -102,8 +102,6 @@ class ItemsList extends HtmlList
         $this->addColumn(ItemDB::COL_NAME, _ITEM_NAME);
         $objDescription = $this->addColumn(ItemDB::COL_DESC, _ITEM_DESCRIPTION);
         $objDescription->setPriority(2);
-        $objRange = $this->addColumn(ItemDB::COL_RANGE, _ITEM_RANGE);
-        $objRange->setPriority(3);
     }// loadColumns
 
 

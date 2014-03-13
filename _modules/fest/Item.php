@@ -34,7 +34,7 @@ class Item extends GenericObject
      */
     public function getRangeAsArray()
     {
-        return explode(';', $this->get(ItemDB::COL_RANGE));
+        return array(1,10);
     }// getRangeAsArray
 
 
@@ -52,30 +52,6 @@ class Item extends GenericObject
         }
         return $this->objVotes;
     }// getVotes
-
-
-    /**
-     * Get votes for chart
-     *
-     * @since 02. March 2014, v. 1.00
-     * @return string Votes for chart
-     */
-    public function getVotesForChart()
-    {
-        $objVotes = $this->getVotes();
-        $aryVotes = $objVotes->getVotes();
-        $arySeries = array();
-
-        if(count($aryVotes))
-        {
-            foreach($aryVotes as $objVote)
-            {
-                $arySeries[] = '[\'' . $objVote->getUserName() . '\', ' . $objVote->getValue() . ']';
-            }
-        }
-
-        return '[' . implode(', ', $arySeries) . ']';
-    }// getVotesForChart
 
 
     /**

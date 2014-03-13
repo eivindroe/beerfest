@@ -102,14 +102,16 @@ class Result
             $objView = $objList->addColumn('view', _VIEW_RESULTS);
             $objView->setAlignment($objView::ALIGN_CENTER);
 
-            $arySeries = array();
+            $aryTotalSeries = array();
+            $aryTotalItemNames = array();
             foreach($aryVotes as $intKey => $objVotes)
             {
                 $objItem = $objVotes->getItem();
-                $strVotes = $objItem->getVotesForChart();
-                $arySeries[] = '[\'' . $objItem->getName() . '\', ' . $objVotes->getAverageValue() . ']';
+                $intItemId = $objItem->getId();
+                $strVotes = $objVotes->getVotesForChart();
                 $objButton = new Button('view', _VIEW);
-                $objButton->setAttributes(array('onclick' => "App.chart('" . $objItem->getName() . "', " . $strVotes . ");"));
+                $objButton->setAttributes(array('onclick' => "App.chart('" . $objItem->getName() . "', " .
+                    $strVotes . ", [" . $objVotes->getUserNamesForChart() . "]);"));
                 $aryRow = array(
                     'name'      => $objVotes->getItemName(),
                     'votes'     => $objVotes->getCount(),
@@ -118,11 +120,47 @@ class Result
                 );
                 $objRow = $objList->addRow($intKey, $aryRow);
                 $objRow->setId($objItem->getCryptId());
+
+                // Total
+                $aryTotalItemNames[] = $objItem->getName();
+
+                $aryTotalVotes = $objVotes->getVotes();
+                $intVotes = count($aryTotalVotes);
+                foreach($aryTotalVotes as $objVote)
+                {
+                    $aryVoteDetails = json_decode($objVote->get(\Beerfest\Fest\Item\Vote\VoteDB::COL_DETAILS), true);
+                    if(is_array($aryVoteDetails))
+                    {
+                        foreach($aryVoteDetails as $strVoteKey => $aryData)
+                        {
+                            $intVoteTotal = (($aryData['value'] * $aryData['weight']) / $intVotes);
+                            if(isset($aryTotalSeries[$strVoteKey][$intItemId]))
+                            {
+                                $aryTotalSeries[$strVoteKey][$intItemId] += $intVoteTotal;
+                            }
+                            else
+                            {
+                                $aryTotalSeries[$strVoteKey][$intItemId] = $intVoteTotal;
+                            }
+                        }
+                    }
+                }
             }
+
+            $strTotal = '';
+            foreach($aryTotalSeries as $aryTotalVote)
+            {
+                if($strTotal)
+                {
+                    $strTotal .= ', ';
+                }
+                $strTotal .= '[' . implode(', ', array_values($aryTotalVote)) . ']';
+            }
+            $strTotal = '[' . $strTotal . ']';
 
             $objTotal = new Button('total', 'Total');
             $objTotal->setInline(true);
-            $objTotal->setAttributes(array('onclick' => 'App.chart(\'Total\', [' . implode(', ', $arySeries) . '])'));
+            $objTotal->setAttributes(array('onclick' => 'App.chart(\'Total\', ' . $strTotal . ', [\'' . implode('\', \'', $aryTotalItemNames) . '\'])'));
             $strHtml .= $objTotal->getHtml();
             $strHtml .= $objList->getListHtml();
             $strHtml .= '<div id="result"><div id="result-chart" class="center"></div></div>';
