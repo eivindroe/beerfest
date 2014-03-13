@@ -10,19 +10,9 @@ $(window).on("load", function () {
     App = new Application();
     App.initialize();
 
-    $(".vote").on("change", function () {
-        var $objTotal = $("#vote_total");
-
-        var $objColor = $("#weighting_color");
-        var intColor = ($objColor.val() * $objColor.attr("data-weight"));
-
-        var $objFoam = $("#weighting_foam");
-        var intFoam = ($objFoam.val() * $objFoam.attr("data-weight"));
-
-        var $objTaste = $("#weighting_taste");
-        var intTaste = ($objTaste.val() * $objTaste.attr("data-weight"));
-
-        $objTotal.val((intColor + intFoam + intTaste));
+    $(".weighting").on("change", function (e) {
+        var $objClass = getClass($(this).closest("form").attr("name"));
+        $objClass.handle_weighting(e, $(this));
     });
 
     $("#result-chart").on("click", function() {
@@ -211,6 +201,25 @@ $.extend(Fest.prototype, {
                 objElement.val(response);
             }
         })
+    },
+    handle_weighting: function (e, $objElement) {
+        var $objTotal = $("#weight_total");
+        var intMax = 1;
+
+        var intColor = parseFloat($("#color").val());
+        var intFoam = parseFloat($("#foam").val());
+        var intTaste = parseFloat($("#taste").val());
+
+        var intSum = (intColor + intFoam + intTaste);
+
+        if(intSum > intMax) {
+            e.preventDefault()
+            $objElement.val(($objElement.val() - (intSum - intMax)).toFixed(2));
+            $objElement.slider("refresh");
+            return false;
+        } else {
+            $objTotal.val(intSum);
+        }
     }
 });
 
@@ -313,6 +322,24 @@ $.extend(Item.prototype, {
             }
         });
     }
+});
+
+var Vote = function () {}
+$.extend(Vote.prototype, {
+    handle_weighting: function () {
+       var $objTotal = $("#vote_total");
+
+       var $objColor = $("#weighting_color");
+       var intColor = ($objColor.val() * $objColor.attr("data-weight"));
+
+       var $objFoam = $("#weighting_foam");
+       var intFoam = ($objFoam.val() * $objFoam.attr("data-weight"));
+
+       var $objTaste = $("#weighting_taste");
+       var intTaste = ($objTaste.val() * $objTaste.attr("data-weight"));
+
+       $objTotal.val((intColor + intFoam + intTaste));
+   }
 });
 
 var Application = function () {}

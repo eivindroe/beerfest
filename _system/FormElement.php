@@ -84,7 +84,7 @@ abstract class FormElement implements Element
         $this->strType = $strType;
         $this->strName = $strName;
         $this->strLabel = $strLabel;
-        $this->setAttributes(array('id' => $strName));
+        $this->setAttribute('id', $strName);
         return $this;
     }// __construct
 
@@ -290,6 +290,22 @@ abstract class FormElement implements Element
 
 
     /**
+     * Set element attribute
+     *
+     * @param string $strKey Element attribute key
+     * @param string $strValue Element attribute value
+     *
+     * @since 13. March 2014, v. 1.00
+     * @return FormElement
+     */
+    public function setAttribute($strKey, $strValue)
+    {
+        $this->setAttributes(array($strKey => $strValue));
+        return $this;
+    }// setAttribute
+
+
+    /**
      * Set element attributes
      *
      * @param array $aryAttributes Element attributes as single array
@@ -371,7 +387,7 @@ abstract class FormElement implements Element
         $this->removeAttribute('disabled');
         if(is_bool($blnDisabled) && $blnDisabled == true)
         {
-            $this->setAttributes(array('disabled' => 'disabled'));
+            $this->setAttribute('disabled', 'disabled');
         }
         return $this;
     }// setDisabled
@@ -390,7 +406,7 @@ abstract class FormElement implements Element
         $this->removeAttribute('readonly');
         if(is_bool($blnReadOnly) && $blnReadOnly == true)
         {
-            $this->setAttributes(array('readonly' => 'readonly'));
+            $this->setAttribute('readonly', 'readonly');
         }
         return $this;
     }// setReadOnly

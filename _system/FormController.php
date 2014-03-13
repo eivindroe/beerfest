@@ -313,7 +313,7 @@ abstract class Controller
      * @since 25. February 2014, v. 1.00
      * @return void
      */
-    public function setDefaults($aryDefaults)
+    protected function setDefaults($aryDefaults)
     {
         $aryElements = $this->getElements();
         foreach($aryDefaults as $strKey => $strValue)

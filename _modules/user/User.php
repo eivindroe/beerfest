@@ -106,6 +106,7 @@ class User extends GenericObject
         {
             $intKey = key($aryFests);
             $intActiveFest = $aryFests[$intKey];
+            $intActiveFest = $aryFests[1];
             $objFest = new Fest($intActiveFest);
         }
         return $objFest;

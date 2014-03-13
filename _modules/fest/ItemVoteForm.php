@@ -153,7 +153,7 @@ class Form extends Controller
             {
                 $aryWeightingObjects[$strKey] = $this->addRangeField(self::COL_WEIGHTING . '_' .
                     $strKey, $aryLabel[$strKey])->setStep(0.1)->setRange(0, 10)->setAttributes(
-                        array('data-highlight' => 'true', 'class' => 'vote', 'data-weight' => $intValue));
+                        array('data-highlight' => 'true', 'class' => 'weighting', 'data-weight' => $intValue));
             }
         }
 
