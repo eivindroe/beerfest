@@ -33,7 +33,10 @@ $.extend(Chart.prototype, {
                 renderer: $.jqplot.BarRenderer,
                 rendererOptions: {
                     highlightMouseDown: false,
-                    highlightMouseOver: false
+                    highlightMouseOver: false,
+                    animation: {
+                        speed: 6500
+                    }
                 },
                 pointLabels: {
                     show: false

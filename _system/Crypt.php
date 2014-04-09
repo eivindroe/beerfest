@@ -9,7 +9,7 @@ class Crypt
      * @param string $strString String to encrypt
      *
      * @since 10. March 2014, v. 1.00
-     * @return Encrypted     string
+     * @return string Encrypted string
      */
     public static function encrypt($strString)
     {

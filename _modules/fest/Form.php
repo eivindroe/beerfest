@@ -146,9 +146,6 @@ class Form extends Controller
         $objTaste = $this->addRangeField(self::COL_TASTE, _ITEM_TASTE);
         $objTaste->setRange(0, 1)->setStep(0.01)->setAttribute('class', 'weighting')->setAttribute('data-highlight', 'true');
 
-        // Hidden total
-        $this->addHiddenField(self::COL_TOTAL)->setAttribute('id', 'weight_total');
-
         $this->addButtonSubmit();
         $this->addButtonReset();
         $this->addButtonCancel();

@@ -12,6 +12,7 @@ class UserDB extends DBTable
     const COL_LASTNAME = 'lastname';
     const COL_EMAIL = 'email';
     const COL_LAST_ACTIVE = 'last_active';
+    const COL_ACTIVE_FEST = 'active_fest';
     const COL_DELETED = 'deleted';
 
 
@@ -72,6 +73,9 @@ class UserDB extends DBTable
             self::COL_LAST_ACTIVE => array(
                 DBTable::DB_TYPE                => DBTable::DB_TYPE_BIGINT
             ),
+            self::COL_ACTIVE_FEST => array(
+                DBTable::DB_TYPE                => DBTable::DB_TYPE_INT
+            ),
             self::COL_DELETED => array(
                 DBTable::DB_TYPE                => DBTable::DB_TYPE_INT
             )
@@ -89,7 +93,7 @@ class UserDB extends DBTable
     {
         if(isset($aryData[self::COL_PASSWORD]))
         {
-            $aryData[self::COL_PASSWORD] = Crypt::encrypt($aryData[self::COL_PASSWORD]);
+            $aryData[self::COL_PASSWORD] = \Beerfest\Core\Crypt::encrypt($aryData[self::COL_PASSWORD]);
         }
         DBTable::insert($aryData);
     }// insert

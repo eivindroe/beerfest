@@ -70,7 +70,7 @@ abstract class Controller
     {
         $this->strName = $strName;
         $this->strMethod = $strMethod;
-        $this->strAction = '/roemedia/beerfest/' . $strAction;
+        $this->strAction = STR_ROOT . $strAction;
         $this->setReferer(Request::getReferer());
     }// __construct
 
@@ -313,7 +313,7 @@ abstract class Controller
      * @since 25. February 2014, v. 1.00
      * @return void
      */
-    protected function setDefaults($aryDefaults)
+    public function setDefaults($aryDefaults)
     {
         $aryElements = $this->getElements();
         foreach($aryDefaults as $strKey => $strValue)

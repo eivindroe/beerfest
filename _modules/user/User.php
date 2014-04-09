@@ -99,16 +99,25 @@ class User extends GenericObject
      */
     public function getActiveFest()
     {
-        $aryFests = $this->getFests();
-
+        $intFestId = $this->get(UserDB::COL_ACTIVE_FEST);
         $objFest = null;
+
+        if($intFestId && $intFestId != 0)
+        {
+            $objFest = new Fest($intFestId);
+        }
+
+
+        /*$aryFests = $this->getFests();
+
+
         if(count($aryFests))
         {
             $intKey = key($aryFests);
             $intActiveFest = $aryFests[$intKey];
             $intActiveFest = $aryFests[1];
             $objFest = new Fest($intActiveFest);
-        }
+        }*/
         return $objFest;
     }// getActiveFest
 
@@ -142,6 +151,28 @@ class User extends GenericObject
         }
         return $blnAdmin;
     }// isAdmin
+
+
+    /**
+     * Check if active user is admin on active fest
+     *
+     * @since 30. March 2014, v. 1.00
+     * @return boolean True if active user is admin on active fest
+     */
+    public function isFestAdmin()
+    {
+        $blnFestAdmin = false;
+        $objFest = $this->getActiveFest();
+        if($this->isAdmin())
+        {
+            $blnFestAdmin = true;
+        }
+        elseif($this->getActiveFest()->get(\Beerfest\Fest\FestDB::COL_CREATED_BY) == $this->getId())
+        {
+            $blnFestAdmin = true;
+        }
+        return $blnFestAdmin;
+    }// isFestAdmin
 
 
     /**

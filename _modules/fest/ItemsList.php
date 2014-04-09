@@ -117,7 +117,11 @@ class ItemsList extends HtmlList
         $this->addButtonNew();
         $aryItems = $this->getItems();
         $objCurrentUser = \Beerfest\Core\Auth::getActiveUser();
-        $intCurrentItem = $objFest->getCurrentItem()->getId();
+        if(is_object($objFest->getCurrentItem()))
+        {
+            $intCurrentItem = $objFest->getCurrentItem()->getId();
+        }
+        else $intCurrentItem = null;
         if(count($aryItems))
         {
             foreach($aryItems as $intKey => $objItem)

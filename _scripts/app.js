@@ -198,14 +198,22 @@ $.extend(Fest.prototype, {
             type: "PUT",
             url: strRoot + "fest:" + strId + "/toggle",
             success: function (response) {
-                objElement.val(response);
+                //objElement.val(response);
+                var $objCurrentActive = objElement.closest("table").find('option[selected="selected"]').parent("select");
+                $objCurrentActive.val(0);
+                $objCurrentActive.removeAttr("disabled");
+                $objCurrentActive.slider("refresh");
+                objElement.val(1);
+                objElement.attr("disabled", "disabled");
+                objElement.slider("refresh");
+                setTimeout(function () {
+                    window.location.href = window.location.href;
+                }, 500);
             }
         })
     },
     handle_weighting: function (e, $objElement) {
-        var $objTotal = $("#weight_total");
         var intMax = 1;
-
         var intColor = parseFloat($("#color").val());
         var intFoam = parseFloat($("#foam").val());
         var intTaste = parseFloat($("#taste").val());
@@ -217,8 +225,6 @@ $.extend(Fest.prototype, {
             $objElement.val(($objElement.val() - (intSum - intMax)).toFixed(2));
             $objElement.slider("refresh");
             return false;
-        } else {
-            $objTotal.val(intSum);
         }
     }
 });
@@ -311,7 +317,6 @@ $.extend(Item.prototype, {
             success: function (response) {
                 if (response.code == 200) {
                     var $objCurrentActive = objElement.closest("table").find('option[selected="selected"]').parent("select");
-                    console.log($objCurrentActive);
                     $objCurrentActive.val(0);
                     $objCurrentActive.removeAttr("disabled");
                     $objCurrentActive.slider("refresh");
@@ -337,7 +342,7 @@ $.extend(Vote.prototype, {
 
        var $objTaste = $("#weighting_taste");
        var intTaste = ($objTaste.val() * $objTaste.attr("data-weight"));
-//test
+
        $objTotal.val((intColor + intFoam + intTaste).toFixed(2));
    }
 });
@@ -346,8 +351,14 @@ var Application = function () {}
 
 $.extend(Application.prototype, {
     initialize: function () {
+        setInterval(function () { App.check_votes() }, 2000);
     },
-    chart: function(strTarget, strName, aryData) {
+    check_votes: function () {
+        /*$.ajax({
+           url: strRoot + ''
+        });*/
+    },
+    chart: function (strTarget, strName, aryData) {
         var $objChart = new Chart();
         $objChart.initialize(strTarget, strName, aryData);
     },

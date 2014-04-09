@@ -31,6 +31,7 @@ class Database
         $objConfig = new \Beerfest\Config();
         $objConnection = new \mysqli();
         $objConnection->connect($objConfig->getName(), $objConfig->getUsername(), $objConfig->getPassword(), $objConfig->getTableName());
+        $objConnection->set_charset("utf8");
         $this->objConnection = $objConnection;
     }// connect
 

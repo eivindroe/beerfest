@@ -53,26 +53,29 @@ class Participants extends GenericObject
         $aryParticipants = array();
         $aryUserIds = array();
         $aryResult = $this->getDb()->select(array_keys($objDb->getTableColumns()), $strWhere);
-        foreach($aryResult as $aryRow)
+        if(count($aryResult))
         {
-            $intId = $aryRow[$objDb::COL_ID];
-            $aryUserIds[] = $aryRow[ParticipantDB::COL_USERID];
-            $aryParticipantsCollection[$intId] = new Participant($intId);
-        }
-
-        $objUsers = new Users();
-        $aryUserNames = $objUsers->getUserNames($aryUserIds);
-
-        if(count($aryUserNames))
-        {
-            foreach($aryParticipantsCollection as $intId => $objParticipant)
+            foreach($aryResult as $aryRow)
             {
-                $intUserId = $objParticipant->get(ParticipantDB::COL_USERID);
-                if(isset($aryUserNames[$intUserId]))
+                $intId = $aryRow[$objDb::COL_ID];
+                $aryUserIds[] = $aryRow[ParticipantDB::COL_USERID];
+                $aryParticipantsCollection[$intId] = new Participant($intId);
+            }
+
+            $objUsers = new Users();
+            $aryUserNames = $objUsers->getUserNames($aryUserIds);
+
+            if(count($aryUserNames))
+            {
+                foreach($aryParticipantsCollection as $intId => $objParticipant)
                 {
-                    $aryParticipant = $objParticipant->getAll();
-                    $aryParticipant[self::COL_NAME] = $aryUserNames[$intUserId];
-                    $aryParticipants[$intId] = $aryParticipant;
+                    $intUserId = $objParticipant->get(ParticipantDB::COL_USERID);
+                    if(isset($aryUserNames[$intUserId]))
+                    {
+                        $aryParticipant = $objParticipant->getAll();
+                        $aryParticipant[self::COL_NAME] = $aryUserNames[$intUserId];
+                        $aryParticipants[$intId] = $aryParticipant;
+                    }
                 }
             }
         }

@@ -169,7 +169,7 @@ class Menu
                 {
                     $this->addMenuItem('fest:' . $strId, $objActiveFest->get(\Beerfest\Fest\FestDB::COL_NAME));
                     $this->addMenuItem('fest:' . $strId . '/items', _ITEMS);
-                    if($objUser->isAdmin())
+                    if($objUser->isAdmin() || $objActiveFest->get(\Beerfest\Fest\FestDB::COL_CREATED_BY) == $objUser->getId())
                     {
                         $this->addMenuItem('fest:' . $strId . '/participants', _PARTICIPANTS);
                         $this->addMenuItem('fest:' . $strId . '/result', _FEST_RESULT);
@@ -222,12 +222,13 @@ class Menu
                 self::COL_TITLE => $this->getActiveUser()->getFullName()
             ));
             $blnAdmin = $this->isAdmin();
+
+            $this->addPanelItem(array(
+                self::COL_URL   => STR_ROOT . 'fest/list',
+                self::COL_TITLE => _FESTS
+            ));
             if($blnAdmin)
             {
-                $this->addPanelItem(array(
-                    self::COL_URL   => STR_ROOT . 'fest/list',
-                    self::COL_TITLE => _FESTS
-                ));
                 $this->addPanelItem(array(
                     self::COL_URL   => STR_ROOT . 'user/list',
                     self::COL_TITLE => _USERS

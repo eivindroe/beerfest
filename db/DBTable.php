@@ -97,7 +97,7 @@ abstract class DBTable implements DBTable_base
      * @since 11. February 2014, v. 1.00
      * @return void
      */
-    private function createTable()
+    protected function createTable()
     {
         $aryColumns = array();
         $aryTableColumns = $this->getTableColumns();
@@ -275,7 +275,7 @@ abstract class DBTable implements DBTable_base
 
         if($strWhere && !stristr($strWhere, 'deleted'))
         {
-            $strWhere .= ' AND `' . self::COL_DELETED . '`=0';
+            $strWhere .= ' AND (`' . self::COL_DELETED . '`=0 OR `' . self::COL_DELETED . '` IS NULL)';
         }
 
         if($strWhere)

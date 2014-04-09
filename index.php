@@ -1,4 +1,10 @@
 <?php
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+mb_http_input('UTF-8');
+mb_language('uni');
+mb_regex_encoding('UTF-8');
+ob_start('mb_output_handler');
 const STR_ROOT = '/roemedia/beerfest/';
 /**
  * Step 1: Require the Slim Framework
@@ -84,6 +90,14 @@ $app = new \Slim\Slim();
  * is an anonymous function.
  */
 
+date_default_timezone_set('Europe/Oslo');
+
+$app->get('/logout', function() use($app) {
+    $objAuth = new \Beerfest\Core\Auth();
+    $objAuth->logOut();
+    $app->redirect(STR_ROOT);
+});
+
 $blnAjax = $app->request->isXhr();
 $app->view()->setTemplatesDirectory('_system/templates');
 
@@ -121,11 +135,6 @@ $app->get('/init', function () use ($app) {
 /**
  * User
  */
-$app->get('/logout', function() use($app) {
-    $objAuth = new \Beerfest\Core\Auth();
-    $objAuth->logOut();
-    $app->redirect(STR_ROOT);
-});
 
 $app->get('/user/list', function() use($app) {
     $objList = new \Beerfest\User\UserList();
@@ -143,8 +152,8 @@ $app->get('/user/list', function() use($app) {
 // View
 $app->get('/user:strUserId', function($strUserId) use($app) {
     $strUserId = str_replace(':', '', $strUserId);
-    require '_modules/User/Form.php';
-    require '_modules/User/Details.php';
+    require '_modules/user/Form.php';
+    require '_modules/user/Details.php';
     $objUser = new \Beerfest\User\User($strUserId);
     $objDetails = new \Beerfest\User\Details($objUser);
     $strBody = $objDetails->getHtml();
@@ -152,7 +161,7 @@ $app->get('/user:strUserId', function($strUserId) use($app) {
 });
 
 $app->get('/user/add', function() use($app) {
-    require '_modules/User/Form.php';
+    require '_modules/user/Form.php';
     $objUser = new \Beerfest\User\User();
     $objForm = new \Beerfest\User\Form($objUser);
     $strBody = $objForm->getHtml();
@@ -162,7 +171,7 @@ $app->get('/user/add', function() use($app) {
 // Edit
 $app->get('/user:strUserId/edit', function($strUserId) use($app) {
     $strUserId = str_replace(':', '', $strUserId);
-    require '_modules/User/Form.php';
+    require '_modules/user/Form.php';
     $objUser = new \Beerfest\User\User($strUserId);
     $objForm = new \Beerfest\User\Form($objUser);
     $strBody = $objForm->getHtml();
@@ -563,8 +572,10 @@ $app->post('/item:strId/vote', function($strId) use($app) {
 $app->put('/fest:strId/toggle', function ($strId) use ($app) {
     $strId = str_replace(':', '', $strId);
     $objFest = new Beerfest\Fest\Fest($strId);
-    $objFest->toggleActive();
-    $app->response->write($objFest->get(Beerfest\Fest\FestDB::COL_ACTIVE));
+    $objActiveUser = \Beerfest\Core\Auth::getActiveUser();
+
+    $objActiveUser->set('active_fest', $objFest->getId());
+    $objActiveUser->save();
 });
 
 $app->put('/participant:strId/toggle', function ($strId) use ($app) {

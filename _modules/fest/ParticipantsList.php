@@ -112,6 +112,11 @@ class ParticipantsList extends HtmlList
                 $objSelect->addOption(1, _YES);
                 $objSelect->setSelected($intSelected);
 
+                if(\Beerfest\Core\Auth::getActiveUser()->isFestAdmin() == false)
+                {
+                    $objSelect->setDisabled(true);
+                }
+
                 $aryRow[ParticipantDB::COL_ACTIVE] = $objSelect->getHtml();
                 $objRow = $this->addRow($aryRow[ParticipantDB::COL_USERID], $aryRow);
                 $objRow->setId($strId);

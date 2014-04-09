@@ -58,10 +58,16 @@ class FestList extends HtmlList
     public function loadContent()
     {
         $objFests = new Fests();
+        $objActiveUser = \Beerfest\Core\Auth::getActiveUser();
         foreach($objFests->getAll(FestDB::COL_NAME) as $objFest)
         {
+            $blnAdmin = false;
+            if($objActiveUser->isAdmin() || ($objActiveUser->getId() == $objFest->get(FestDB::COL_CREATED_BY)))
+            {
+                $blnAdmin = true;
+            }
             $strId = $objFest->getCryptId();
-            $intSelected = ($objFest->get(FestDB::COL_ACTIVE) ? 1 : 0);
+            $intSelected = ($objFest->get(FestDB::COL_ID) == $objActiveUser->getActiveFest()->getId() ? 1 : 0);
             $objSelect = new Select('active');
             $objSelect->setAttributes(array('data-role' => 'slider', 'data-id' => $strId, 'data-module' => 'Fest', 'data-mini' => true, 'class' => 'toggle'));
             $objSelect->addOption(0, _NO);
@@ -72,8 +78,12 @@ class FestList extends HtmlList
 
             $objRow = $this->addRow($objFest->getId(), $aryFest);
             $objRow->setId($strId);
-            $objRow->setEdit($strId);
-            $objRow->setDelete($strId);
+
+            if($blnAdmin)
+            {
+                $objRow->setEdit($strId);
+                $objRow->setDelete($strId);
+            }
         }
     }// loadContent
 
