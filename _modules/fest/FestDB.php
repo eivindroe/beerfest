@@ -16,6 +16,7 @@ class FestDB extends DBTable
     const COL_ACTIVE = 'active';
     const COL_VOTING = 'voting';
     const COL_CURRENT_ITEM = ItemDB::COL_ID;
+    const COL_ANONYMOUS = 'anonymous';
     const COL_CREATED = 'created';
     const COL_CREATED_BY = 'created_by';
     const COL_DELETED = 'deleted';
@@ -66,7 +67,10 @@ class FestDB extends DBTable
                 DBTable::DB_TYPE => DBTable::DB_TYPE_VARCHAR
             ),
             self::COL_CURRENT_ITEM => array(
-                DBTable::DB_TYPE => DBTable::DB_TYPE_INT,
+                DBTable::DB_TYPE => DBTable::DB_TYPE_INT
+            ),
+            self::COL_ANONYMOUS => array(
+                DBTable::DB_TYPE => DBTable::DB_TYPE_BOOL
             ),
             self::COL_CREATED => array(
                 DBTable::DB_TYPE => DBTable::DB_TYPE_INT

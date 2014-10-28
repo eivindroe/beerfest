@@ -12,6 +12,7 @@ use Beerfest\Fest\Participant\ParticipantDB;
 use Beerfest\User\User;
 use Beerfest\User\Users;
 use Beerfest\User\UserDB;
+use Beerfest\Core\Auth;
 
 class Fest extends GenericObject
 {
@@ -103,6 +104,53 @@ class Fest extends GenericObject
 
 
     /**
+     * Check if user is fest admin
+     *
+     * @since 09. May 2014, v. 1.00
+     * @return boolean True if user is system admin or fest creator
+     */
+    public function isFestAdmin()
+    {
+        $objUser = Auth::getActiveUser();
+        if($objUser->isAdmin() || $objUser->getId() == $this->get(FestDB::COL_CREATED_BY))
+        {
+            $blnAdmin = true;
+        }
+        else $blnAdmin = false;
+        return $blnAdmin;
+    }// isFestAdmin
+
+
+    /**
+     * Set anonymous property on fest - turn on or off
+     *
+     * @param boolean $blnAnonymous True to turn on anonymous fest functionality, false if turn off
+     *
+     * @since 23. October 2014, v. 1.10
+     * @return void
+     */
+    public function setAnonymous($blnAnonymous = true)
+    {
+        if(is_bool($blnAnonymous))
+        {
+            $this->set(FestDB::COL_ANONYMOUS, $blnAnonymous);
+        }
+    }// setAnonymous
+
+
+    /**
+     * Check if fest is flagged as anonymous
+     *
+     * @since 23. October 2014, v. 1.10
+     * @return boolean True if flagged anonymous, false if not
+     */
+    public function isAnonymous()
+    {
+        return ($this->get(FestDB::COL_ANONYMOUS));
+    }// isAnonymous
+
+
+    /**
      * Toggle active
      *
      * @since 22. February 2014, v. 1.00
@@ -184,7 +232,7 @@ class Fest extends GenericObject
         if(!$this->getId())
         {
             $this->set(FestDB::COL_CREATED, time());
-            $this->set(FestDB::COL_CREATED_BY, \Beerfest\Core\Auth::getActiveUserId());
+            $this->set(FestDB::COL_CREATED_BY, Auth::getActiveUserId());
         }
         parent::save();
     }// save
@@ -219,14 +267,24 @@ class Fest extends GenericObject
         $objNextItem = null;
         $intCurrentItem = $this->get(FestDB::COL_CURRENT_ITEM);
         $aryItems = $this->getItems();
-
         if(count($aryItems))
         {
             if($intCurrentItem)
             {
-                $objCurrent = $aryItems[$intCurrentItem];
-                $objNextItem = next($aryItems);
-                if(key($aryItems) == $intCurrentItem)
+                $objCurrent = reset($aryItems);
+                while($objNextItem === null)
+                {
+                    if($intCurrentItem == $objCurrent->getId())
+                    {
+                        $objNextItem = next($aryItems);
+                        break;
+                    }
+                    else
+                    {
+                        $objCurrent = next($aryItems);
+                    }
+                }
+                if(end($aryItems) == $intCurrentItem)
                 {
                     $objNextItem = null;
                 }

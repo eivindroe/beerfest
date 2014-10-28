@@ -6,6 +6,7 @@ const _VOTING_NOT_STARTED = 'Avstemming er ikke igangsatt enda';
 const _FEST_NAME = 'Navn';
 const _FEST_LOCATION = 'Lokasjon';
 const _FEST_ACTIVE = 'Aktiv';
+const _FEST_ANONYMOUS = 'Anonymisert';
 const _FEST = 'Fest';
 const _FESTS = 'Fester';
 const _FEST_RESULT = 'Resultat';

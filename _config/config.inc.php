@@ -26,23 +26,25 @@ class Config
     public function getTableName()
     {
         return 'beerfest';
+        //return 'wno349523_5';
     }
 
     public function getName()
     {
         return 'localhost';
+        //return 'db.roemedia.no';
     }// getName
 
     public function getUsername()
     {
         return 'root';
+        //return 'wno349523';
     }// getUsername
-
-
 
     public function getPassword()
     {
         return 'cimserver';
+        //return 'zy6mb59d83';
     }// getPassword
 
 
@@ -65,8 +67,12 @@ class Config
             case 'jquery.mobile':
                 $strVersion = '1.4.1';
                 break;
+            case 'jquery-ui':
+                $strVersion = '1.11.2';
+                break;
             case 'jqplot':
                 $strVersion = '1.0.8';
+                break;
             default:
                 break;
         }

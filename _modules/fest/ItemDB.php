@@ -14,6 +14,7 @@ class ItemDB extends DBTable
     const COL_FEST_ID = FestDB::COL_ID;
     const COL_NAME = 'name';
     const COL_DESC = 'description';
+    const COL_INDEX = 'index';
     const COL_DELETED = 'deleted';
 
 
@@ -57,6 +58,9 @@ class ItemDB extends DBTable
             self::COL_DESC => array(
                 DBTable::DB_TYPE            => DBTable::DB_TYPE_VARCHAR,
                 DBTable::DB_SIZE            => 255
+            ),
+            self::COL_INDEX => array(
+                DBTable::DB_TYPE            => DBTable::DB_TYPE_INT
             ),
             self::COL_DELETED => array(
                 DBTable::DB_TYPE            => DBTable::DB_TYPE_INT

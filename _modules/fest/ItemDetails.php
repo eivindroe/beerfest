@@ -50,7 +50,7 @@ class Details
     {
         $objItem = $this->getItem();
 
-        $strHtml = '<h1>' . $objItem->get(ItemDB::COL_NAME) . '</h1><p>' . _ITEM_DESCRIPTION . ': ' .
+        $strHtml = '<h1>' . $objItem->getName() . '</h1><p>' . _ITEM_DESCRIPTION . ': ' .
             $objItem->get(ItemDB::COL_DESC) . '</p><br />';
 
         $objVotes = $objItem->getVotes();

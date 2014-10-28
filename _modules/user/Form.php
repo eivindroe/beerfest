@@ -120,7 +120,7 @@ class Form extends Controller
     {
         $objUser = $this->getUser();
         $blnValid = true;
-        if($objUser->getId() && isset($aryPost[self::COL_NEW_PASSWORD]))
+        if($objUser->getId())
         {
             if(isset($aryPost[self::COL_NEW_PASSWORD]) || isset($aryPost[self::COL_REPEAT_PASSWORD]))
             {

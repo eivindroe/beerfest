@@ -78,15 +78,15 @@ abstract class DBTable implements DBTable_base
      */
     private function checkTable()
     {
-        $blnExists = mysqli_query($this->getConnection(), 'SHOW TABLES LIKE ' . $this->getTableName());
-        if($blnExists === false)
+        $objResult = $this->query('SHOW TABLES LIKE "' . $this->getTableName() . '"');
+        if($objResult === false)
         {
             // Create table
             $this->createTable();
         }
         else
         {
-            // @TODO Check if table has changed, if it has alter table
+            $this->checkTableChanges();
         }
     }// checkTable
 
@@ -180,6 +180,69 @@ abstract class DBTable implements DBTable_base
             print_r($this->getConnection()->error);
         }
     }// createTable
+
+
+    /**
+     * Check for table changes - if found alterTable is triggered
+     *
+     * @since 23. October 2014, v. 1.10
+     * @return void
+     */
+    private function checkTableChanges()
+    {
+        $strQuery = 'DESCRIBE `' . $this->getTableName() . '`';
+        $objResult = $this->query($strQuery);
+        if($objResult)
+        {
+            $aryTableColumns = $this->getTableColumns();
+            $arySavedColumns = array();
+
+            $aryRemove = array();
+            $aryAdd = array();
+            while($aryRow = $objResult->fetch_assoc())
+            {
+                $strField = $aryRow['Field'];
+                $arySavedColumns[$strField] = array(
+                    DBTable::DB_TYPE => $aryRow['Type']
+                );
+
+                if(!isset($aryTableColumns[$strField]))
+                {
+                    $aryRemove[] = $strField;
+                }
+            }
+
+            foreach($aryTableColumns as $strFieldKey => $aryFieldValue)
+            {
+                if(!isset($arySavedColumns[$strFieldKey]))
+                {
+                    $aryAdd[$strFieldKey] = $aryFieldValue;
+                }
+            }
+
+            $this->alterTable($aryAdd, $aryRemove);
+        }
+    }// checkTableChanges
+
+
+    /**
+     * Alter table
+     *
+     * @param array $aryAdd Fields to add
+     * @param array $aryRemove Field to remove
+     *
+     * @since 23. October 2014, v. 1.10
+     * @return void
+     */
+    private function alterTable($aryAdd, $aryRemove)
+    {
+        foreach($aryAdd as $strField => $aryValues)
+        {
+            $strAttributes = $aryValues[self::DB_TYPE];
+            $strQuery = 'ALTER TABLE `' . $this->getTableName() . '` ADD `' . $strField . '` ' . $strAttributes;
+            $objResult = $this->query($strQuery);
+        }
+    }// alterTable
 
 
     /**
@@ -285,7 +348,21 @@ abstract class DBTable implements DBTable_base
 
         if($strOrder)
         {
-            $strOrder = ' ORDER BY ' . $strOrder;
+            if(stristr($strOrder, 'desc'))
+            {
+                $blnDesc = true;
+                $strOrder = trim(str_replace('desc', '', $strOrder));
+            }
+            else $blnDesc = false;
+            if(stristr($strOrder, 'asc'))
+            {
+                $strOrder = trim(str_replace('asc', '', $strOrder));
+            }
+            $strOrder = ' ORDER BY `' . $strOrder . '`';
+            if($blnDesc)
+            {
+                $strOrder .= ' DESC';
+            } else $strOrder .= ' ASC';
         }
 
         $strLimit = '';

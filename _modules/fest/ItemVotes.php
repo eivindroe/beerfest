@@ -77,7 +77,7 @@ class Votes
     public function getItemName()
     {
         $objItem = $this->getItem();
-        return $objItem->get(ItemDB::COL_NAME);
+        return $objItem->getName();
     }// getItemName
 
 

@@ -15,7 +15,6 @@ const STR_ROOT = '/roemedia/beerfest/';
  * If you are using Composer, you can skip this step.
  */
 require 'Slim/Slim.php';
-//require '_packages/system/Beerfest.php';
 require '_system/Crypt.php';
 require '_config/config.inc.php';
 require '_system/Auth.php';
@@ -48,6 +47,7 @@ require '_system/Button.php';
 require '_system/Navigation.php';
 require '_system/NavigationElement.php';
 require '_system/Menu.php';
+require '_system/Session.php';
 require '_lang/no.php';
 
 require '_modules/user/UserDB.php';
@@ -119,7 +119,19 @@ if(!$blnAjax)
 }
 
 // Welcome
-$app->get('/', function () {
+$app->get('/', function () use ($app) {
+    $objAuth = new \Beerfest\Core\Auth();
+    if($objAuth->isAuthenticated())
+    {
+        $objUser = $objAuth->getActiveUser();
+        $objFest = $objUser->getActiveFest();
+        if(is_object($objFest))
+        {
+            $app->response->redirect(STR_ROOT . 'fest:' . $objFest->getCryptId());
+            $app->stop();
+        }
+    }
+    $app->response->write('Welcome');
 });
 
 
@@ -184,7 +196,7 @@ $app->post('/user/login', function() use ($app)
     $aryPost = $app->request->post('data');
     if($app->request->isXhr())
     {
-        $aryPost = ajax_decode($aryPost);
+        $aryPost = json_decode($aryPost, 1);
     }
     $objAuth = new \Beerfest\Core\Auth;
     $blnValid = false;
@@ -195,8 +207,10 @@ $app->post('/user/login', function() use ($app)
 
     if($blnValid)
     {
+        $objUser = \Beerfest\Core\Auth::getActiveUser();
+        $strFestId = $objUser->getActiveFest()->getCryptId();
         $aryResult['code'] = 200;
-        $aryResult['data'] = STR_ROOT;
+        $aryResult['data'] = STR_ROOT . 'fest:' . $strFestId;
         $app->response->header(200);
     }
     else
@@ -213,7 +227,7 @@ $app->post('/user/login', function() use ($app)
     }
     else
     {
-        $app->redirect('', 200);
+        $app->redirect(STR_ROOT, 200);
     }
 });
 
@@ -224,7 +238,7 @@ $app->post('/user:strUserId', function($strUserId) use($app) {
     $aryPost = $app->request->post('data');
     if($app->request->isXhr())
     {
-        $aryPost = ajax_decode($aryPost);
+        $aryPost = json_decode($aryPost, 1);
     }
     $objForm = new \Beerfest\User\Form($objUser);
     if($objForm->validate($aryPost) == true)
@@ -328,7 +342,7 @@ $app->post('/fest:strFestId', function($strFestId) use ($app) {
 
     if($app->request->isXhr())
     {
-        $aryPost = ajax_decode($aryPost['data']);
+        $aryPost = json_decode($aryPost['data'], true);
     }
     $objForm = new \Beerfest\Fest\Form($objFest);
     if($objForm->validate($aryPost) == true)
@@ -455,6 +469,19 @@ $app->put('/fest:strFestId/current:strItemId', function ($strFestId, $strItemId)
     }
 });
 
+// Sort items
+$app->put('/items/sort', function () use ($app) {
+    $aryItemIds = json_decode($app->request->put('data'), true);
+    $intIndex = 1;
+    foreach($aryItemIds as $strId)
+    {
+        $objItem = new \Beerfest\Fest\Item\Item($strId);
+        $objItem->set(\Beerfest\Fest\Item\ItemDB::COL_INDEX, $intIndex);
+        $objItem->save();
+        $intIndex++;
+    }
+});
+
 // Edit item
 $app->get('/item:strItemId/edit', function($strId) use($app) {
     $strId = str_replace(':', '', $strId);
@@ -490,7 +517,7 @@ $app->post('/item:strItemId', function($strId) use($app) {
 
     if($app->request->isXhr())
     {
-        $aryPost = ajax_decode($aryPost['data']);
+        $aryPost = json_decode($aryPost['data'], true);
     }
     $objForm = new \Beerfest\Fest\Item\Form($objItem);
     if($objForm->validate($aryPost) == true)
@@ -535,7 +562,7 @@ $app->post('/item:strId/vote', function($strId) use($app) {
     $aryPost = $app->request->post('data');
     if($app->request->isXhr())
     {
-        $aryPost = ajax_decode($aryPost);
+        $aryPost = json_decode($aryPost, 1);
     }
     $objItem = new \Beerfest\Fest\Item\Item($strId);
     $objForm = new \Beerfest\Fest\Item\Vote\Form($objItem);
@@ -638,11 +665,6 @@ $app->delete('/item:strItemId', function($strItemId) use($app) {
         }
     }
 });
-
-if(!$blnAjax)
-{
-    //$app->response->write($app->render('system/templates/footer.html'));
-}
 
 /**
  * Step 4: Run the Slim application

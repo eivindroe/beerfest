@@ -65,6 +65,13 @@ abstract class Controller implements ListInterface
 
 
     /**
+     * Flag sortable list
+     * @var boolean
+     */
+    private $blnSortable = false;
+
+
+    /**
      * Constructor
      * @param string $strName List name
      * @param string $strTitle List title
@@ -245,6 +252,35 @@ abstract class Controller implements ListInterface
 
 
     /**
+     * Set sortable
+     *
+     * @param boolean $blnSortable True to enable sorting, false to disable
+     *
+     * @since 23. October 2014, v. 1.10
+     * @return void
+     */
+    public function setSortable($blnSortable = true)
+    {
+        if(is_bool($blnSortable))
+        {
+            $this->blnSortable = $blnSortable;
+        }
+    }// setSortable
+
+
+    /**
+     * Check if is sortable
+     *
+     * @since 23. October 2014, v. 1.10
+     * @return boolean True if sortable, false if not
+     */
+    private function isSortable()
+    {
+        return $this->blnSortable;
+    }// isSortable
+
+
+    /**
      * Add button to list
      *
      * @param string $strKey Button key
@@ -387,6 +423,11 @@ abstract class Controller implements ListInterface
         $aryColumns = $this->getColumns();
         $aryRows = $this->getRows();
         $strTitle = $this->getTitle();
+
+        if($this->isSortable())
+        {
+            $this->setAttributes(array('class' => 'sortable_list'));
+        }
 
         $strList = '';
 

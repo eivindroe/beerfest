@@ -16,7 +16,6 @@ class Database
      */
     public function __construct()
     {
-        $this->connect();
     }// __construct
 
 
@@ -32,7 +31,7 @@ class Database
         $objConnection = new \mysqli();
         $objConnection->connect($objConfig->getName(), $objConfig->getUsername(), $objConfig->getPassword(), $objConfig->getTableName());
         $objConnection->set_charset("utf8");
-        $this->objConnection = $objConnection;
+        return $objConnection;
     }// connect
 
 
@@ -44,7 +43,11 @@ class Database
      */
     private function disconnect()
     {
-        mysqli_close($this->getConnection());
+        if(isset($GLOBALS['db']))
+        {
+            mysqli_close($this->getConnection());
+            unset($GLOBALS['db']);
+        }
     }// disconnect
 
 
@@ -56,7 +59,11 @@ class Database
      */
     public function getConnection()
     {
-        return $this->objConnection;
+        if(!isset($GLOBALS['db']))
+        {
+            $GLOBALS['db'] = $this->connect();
+        }
+        return $GLOBALS['db'];
     }// getConnection
 
 

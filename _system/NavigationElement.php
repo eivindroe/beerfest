@@ -52,7 +52,7 @@ class NavigationElement
 
     public function getHtml()
     {
-        $strHtml = '<a href="/roemedia/beerfest/' . $this->getPath() . '"' . $this->getAjaxHtml() . ' data-role="button">' . $this->getLabel() . '</a>';
+        $strHtml = '<a href="' . STR_ROOT . $this->getPath() . '"' . $this->getAjaxHtml() . ' data-role="button">' . $this->getLabel() . '</a>';
         return $strHtml;
     }
 

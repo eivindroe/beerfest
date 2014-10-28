@@ -54,8 +54,8 @@ class Select extends FormElement
     /**
      * Add single select option
      *
-     * @param string $strValue Selext value
-     * @param string $strName Selexct name
+     * @param string $strValue Select value
+     * @param string $strName Select name
      *
      * @since 25. February 2014, v. 1.00
      * @return void
@@ -124,6 +124,10 @@ class Select extends FormElement
      */
     private function getSelected()
     {
+        if(!isset($this->strSelected))
+        {
+            $this->strSelected = $this->getValue();
+        }
         return $this->strSelected;
     }// getSelected
 

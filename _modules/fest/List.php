@@ -30,7 +30,7 @@ class FestList extends HtmlList
     private function loadButtons()
     {
         $objAdd = $this->addButtonNew(_FEST);
-        $objAdd->setInline(true);
+        $objAdd->setInline();
     }// loadButtons
 
 
@@ -46,6 +46,8 @@ class FestList extends HtmlList
         $objActive->setAlignment($objActive::ALIGN_CENTER);
         $this->addColumn(FestDB::COL_NAME, _FEST_NAME);
         $this->addColumn(FestDB::COL_LOCATION, _FEST_LOCATION);
+        $objAnonymous = $this->addColumn(FestDB::COL_ANONYMOUS, _FEST_ANONYMOUS);
+        $objAnonymous->setWidth("40px");
     }// loadColumns
 
 
@@ -67,15 +69,21 @@ class FestList extends HtmlList
                 $blnAdmin = true;
             }
             $strId = $objFest->getCryptId();
-            $intSelected = ($objFest->get(FestDB::COL_ID) == $objActiveUser->getActiveFest()->getId() ? 1 : 0);
+            $intSelected = null;
+            if(is_object($objActiveUser->getActiveFest()))
+            {
+                $intSelected = $objActiveUser->getActiveFest()->getId();
+            }
+            $intSelected = ($objFest->get(FestDB::COL_ID) == $intSelected ? 1 : 0);
             $objSelect = new Select('active');
-            $objSelect->setAttributes(array('data-role' => 'slider', 'data-id' => $strId, 'data-module' => 'Fest', 'data-mini' => true, 'class' => 'toggle'));
+            $objSelect->setAttributes(array('data-role' => 'slider', 'data-id' => $strId,
+                'data-module' => 'Fest', 'data-mini' => true, 'class' => 'toggle'));
             $objSelect->addOption(0, _NO);
             $objSelect->addOption(1, _YES);
             $objSelect->setSelected($intSelected);
             $aryFest = $objFest->getAll();
             $aryFest[FestDB::COL_ACTIVE] = $objSelect->getHtml();
-
+            $aryFest[FestDB::COL_ANONYMOUS] = ($aryFest[FestDB::COL_ANONYMOUS] ? _YES : _NO);
             $objRow = $this->addRow($objFest->getId(), $aryFest);
             $objRow->setId($strId);
 

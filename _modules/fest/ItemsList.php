@@ -62,9 +62,8 @@ class ItemsList extends HtmlList
      */
     public function addButtonNew()
     {
-        $objUser = \Beerfest\Core\Auth::getActiveUser();
         $objButton = null;
-        if($objUser->isAdmin() || $objUser->getId() == $this->getFest()->get(FestDB::COL_CREATED_BY))
+        if($this->getFest()->isFestAdmin())
         {
             $objButton = parent::addButtonNew('Item');
             $objButton->setAttributes(array('data-id' => $this->getFest()->getCryptId()));
@@ -113,6 +112,7 @@ class ItemsList extends HtmlList
      */
     public function loadContent()
     {
+        $this->setSortable();
         $objFest = $this->getFest();
         $this->addButtonNew();
         $aryItems = $this->getItems();
@@ -132,7 +132,7 @@ class ItemsList extends HtmlList
                 $objSelect->setAttributes(array('data-role' => 'slider', 'data-fest' => $objFest->getCryptId(), 'data-item' => $strId, 'data-module' => 'Item', 'data-mini' => true, 'class' => 'toggle'));
                 $objSelect->addOption(0, _NO);
                 $objSelect->addOption(1, _YES);
-                if($intCurrentItem == $objItem->getId())
+                if($intCurrentItem == $objItem->getId() || $objFest->isFestAdmin() === false)
                 {
                     $objSelect->setSelected(1);
                     $objSelect->setDisabled(true);

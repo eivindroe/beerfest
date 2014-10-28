@@ -169,6 +169,25 @@ $(window).on("load", function () {
         var strReferer = $objForm.find('input[name="referer"]').val();
         document.location.href = strReferer;
     });
+
+    // List sorting
+    var $objList = $(document).find("table.sortable_list tbody");
+    if(typeof $objList !== "undefined") {
+        $objList.sortable();
+        $objList.disableSelection();
+        $objList.bind("sortstop", function () {
+            var strType = $(this).parent("table").attr("data-module");
+            var $objRows = $objList.find("tr");
+            var $aryIds = [];
+            $objRows.each(function () {
+                var strId = $(this).attr("data-id");
+                $aryIds.push(strId);
+            });
+            var $objClass = getClass(strType);
+            $objClass.sort($aryIds);
+        });
+        $objList.listview("refresh");
+    }
 });
 
 
@@ -324,6 +343,17 @@ $.extend(Item.prototype, {
                     objElement.attr("disabled", "disabled");
                     objElement.slider("refresh");
                 }
+            }
+        });
+    },
+    sort: function (aryIds) {
+        $.ajax({
+            type: "PUT",
+            url: strRoot + "items/sort",
+            dataType: "json",
+            data: { data : JSON.stringify(aryIds) },
+            success: function () {
+
             }
         });
     }

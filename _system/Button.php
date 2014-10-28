@@ -130,7 +130,7 @@ class Button
      * @since 25. February 2014, v. 1.00
      * @return void
      */
-    public function setInline($blnInline)
+    public function setInline($blnInline = true)
     {
         if(is_bool($blnInline))
         {

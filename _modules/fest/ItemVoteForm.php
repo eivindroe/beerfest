@@ -246,7 +246,7 @@ class Form extends Controller
         $strHtml = '';
         if($objItem)
         {
-            $strHtml .= '<h1>' . $objItem->get(ItemDB::COL_NAME) . '</h1>';
+            $strHtml .= '<h1>' . $objItem->getName() . '</h1>';
         }
         if($objVote)
         {

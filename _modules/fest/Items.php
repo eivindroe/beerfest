@@ -28,8 +28,8 @@ class Items extends GenericObject
     /**
      * Get database object
      *
-     * @since 22. Febraury 2014, v. 1.00
-     * @return FestItemDB
+     * @since 22. February 2014, v. 1.00
+     * @return ItemDB
      */
     private function getDb()
     {
@@ -49,7 +49,7 @@ class Items extends GenericObject
     {
         $objDb = $this->getDb();
         $aryItems = array();
-        $aryResult = $this->getDb()->select(array_keys($objDb->getTableColumns()), $strWhere);
+        $aryResult = $this->getDb()->select(array_keys($objDb->getTableColumns()), $strWhere, ItemDB::COL_INDEX);
         foreach($aryResult as $aryRow)
         {
             $intId = $aryRow[$objDb::COL_ID];
@@ -59,4 +59,4 @@ class Items extends GenericObject
     }// getItems
 
 
-}// FestItems
+}// Items

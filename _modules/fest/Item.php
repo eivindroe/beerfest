@@ -62,7 +62,12 @@ class Item extends GenericObject
      */
     public function getName()
     {
-        return $this->get(ItemDB::COL_NAME);
+        $blnAnonymous = \Beerfest\Core\Session::getInstance()->get('mode_anonymous');
+        if($blnAnonymous == true)
+        {
+            return "#" . $this->get(ItemDB::COL_INDEX);
+        }
+        else return $this->get(ItemDB::COL_NAME);
     }// getName
 
 

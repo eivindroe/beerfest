@@ -105,6 +105,8 @@ class User extends GenericObject
         if($intFestId && $intFestId != 0)
         {
             $objFest = new Fest($intFestId);
+            $blnAnonymous = ($objFest->get(\Beerfest\Fest\FestDB::COL_ANONYMOUS));
+            \Beerfest\Core\Session::getInstance()->set('mode_anonymous', $blnAnonymous);
         }
 
 

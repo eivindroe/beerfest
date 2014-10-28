@@ -134,6 +134,10 @@ class Form extends Controller
         $objActive->addOption(0, _NO);
         $objActive->addOption(1, _YES);
 
+        $objAnonymous = $this->addSelectField(FestDB::COL_ANONYMOUS, _FEST_ANONYMOUS);
+        $objAnonymous->setAttributes(array('data-role' => 'slider'));
+        $objAnonymous->addOptions(array(0 => _NO, 1 => _YES));
+
         // Color
         $objColor = $this->addRangeField(self::COL_COLOR, _ITEM_COLOR);
         $objColor->setRange(0, 1)->setStep(0.01)->setAttribute('class', 'weighting')->setAttribute('data-highlight', 'true');
